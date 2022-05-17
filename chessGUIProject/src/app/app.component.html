@@ -76,13 +76,21 @@
     width: 1920px;
   }
 
+  .wrapper {
+    align-items: stretch;
+    display: flex;
+    width: 100%;
+    color: brown;
+  }
 
+  #sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    min-height: 100px;
+  }
 
-  @media screen and (max-width: 575px) {
-    svg#rocket-smoke {
-      display: none;
-      visibility: hidden;
-    }
+  #sidebar.active {
+    margin-left: -250px;
   }
 </style>
 
@@ -96,6 +104,23 @@
   <span>Welcome</span>
     <div class="spacer"></div>
 
+</div>
+
+<!-- Sidebar -->
+<div class="wrapper">
+  <nav id="sidebar">
+    <p>Test</p>
+    <p>Test</p>
+    <p>Test</p>
+    <p>Test</p>
+    <p>Test</p>
+    <p>Test</p>
+    <p>Test</p>
+    <p>Test</p>
+    <p>Test</p>
+    <p>Test</p>
+  </nav>
+  
 </div>
 
 <div class="content" role="main">
