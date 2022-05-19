@@ -1,138 +1,80 @@
-<style>
-  :host {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 14px;
-    color: #333;
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 8px 0;
-  }
-
-  p {
-    margin: 0;
-  }
-
-  .spacer {
-    flex: 1;
-  }
-
-  .toolbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    background-color: #72330993;
-    color: white;
-    font-weight: 600;
-  }
-
-  .toolbar img {
-    margin: 0 16px;
-  }
-
-  .content {
-    display: flex;
-    margin: 82px auto 32px;
-    padding: 0 16px;
-    max-width: 960px;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  svg.material-icons {
-    height: 24px;
-    width: auto;
-  }
-
-  footer {
-    margin-top: 8px;
-    display: flex;
-    align-items: center;
-    line-height: 20px;
-  }
-
-  footer a {
-    display: flex;
-    align-items: center;
-  }
-
-  svg#clouds {
-    position: fixed;
-    bottom: -160px;
-    left: -230px;
-    z-index: -10;
-    width: 1920px;
-  }
-
-  .wrapper {
-    align-items: stretch;
-    display: flex;
-    width: 100%;
-    color: brown;
-  }
-
-  #sidebar {
-    min-width: 250px;
-    max-width: 250px;
-    min-height: 100px;
-  }
-
-  #sidebar.active {
-    margin-left: -250px;
-  }
-</style>
-
-<!-- Toolbar -->
-<div class="toolbar" role="banner">
-  <img
-    width="70"
-    alt="Angular Logo"
-    src="https://www.swr.de/swr2/1648721808320,swr2-impuls-schach-100~_v-16x9@2dL_-6c42aff4e68b43c7868c3240d3ebfa29867457da.jpg"
-  />
-  <span>Welcome</span>
-    <div class="spacer"></div>
-
-</div>
-
-<!-- Sidebar -->
 <div class="wrapper">
+  <!-- Sidebar Holder -->
   <nav id="sidebar">
-    <p>Test</p>
-    <p>Test</p>
-    <p>Test</p>
-    <p>Test</p>
-    <p>Test</p>
-    <p>Test</p>
-    <p>Test</p>
-    <p>Test</p>
-    <p>Test</p>
-    <p>Test</p>
+      <div class="sidebar-header">
+          <h3>Menü</h3>
+      </div>
+
+      <ul class="list-unstyled components">
+          <p>Schwach Matt</p>
+          <li class="active">
+              <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Home</a>
+              <ul class="collapse list-unstyled" id="homeSubmenu">
+                  <li><a href="#">Home 1</a></li>
+                  <li><a href="#">Home 2</a></li>
+                  <li><a href="#">Home 3</a></li>
+              </ul>
+          </li>
+          <li>
+              <a href="#">About</a>
+              <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
+              <ul class="collapse list-unstyled" id="pageSubmenu">
+                  <li><a href="#">Page 1</a></li>
+                  <li><a href="#">Page 2</a></li>
+                  <li><a href="#">Page 3</a></li>
+              </ul>
+          </li>
+          <li>
+              <a href="#">Portfolio</a>
+          </li>
+          <li>
+              <a href="#">Contact</a>
+          </li>
+      </ul>
   </nav>
-  
-</div>
 
-<div class="content" role="main">
+  <!-- Page Content Holder -->
+  <div id="content">
 
-  <!-- Menü -->
-  <h2>Menü</h2>
-  <div class="button-container">
-    <button type="button" class="btn btn-primary">Einstellungen</button>
+      <nav class="navbar navbar-default">
+          <div class="container-fluid">
+
+              <div class="navbar-header">
+                  <button type="button" id="sidebarCollapse" class="navbar-btn">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                  </button>
+              </div>
+
+              <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                  <ul class="nav navbar-nav navbar-right">
+                      <li><a href="#">Page</a></li>
+                      <li><a href="#">Page</a></li>
+                      <li><a href="#">Page</a></li>
+                      <li><a href="#">Page</a></li>
+                  </ul>
+              </div>
+          </div>
+      </nav>
+
+      <h2>Collapsible Sidebar Using Bootstrap 3</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+      <div class="line"></div>
+
+      <h2>Lorem Ipsum Dolor</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+      <div class="line"></div>
+
+      <h2>Lorem Ipsum Dolor</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+      <div class="line"></div>
+
+      <h3>Lorem Ipsum Dolor</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
   </div>
-
-  <svg id="clouds" alt="Gray Clouds Background" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677" viewBox="0 0 2611.084 485.677">
-    <path id="Path_39" data-name="Path 39" d="M2379.709,863.793c10-93-77-171-168-149-52-114-225-105-264,15-75,3-140,59-152,133-30,2.83-66.725,9.829-93.5,26.25-26.771-16.421-63.5-23.42-93.5-26.25-12-74-77-130-152-133-39-120-212-129-264-15-54.084-13.075-106.753,9.173-138.488,48.9-31.734-39.726-84.4-61.974-138.487-48.9-52-114-225-105-264,15a162.027,162.027,0,0,0-103.147,43.044c-30.633-45.365-87.1-72.091-145.206-58.044-52-114-225-105-264,15-75,3-140,59-152,133-53,5-127,23-130,83-2,42,35,72,70,86,49,20,106,18,157,5a165.625,165.625,0,0,0,120,0c47,94,178,113,251,33,61.112,8.015,113.854-5.72,150.492-29.764a165.62,165.62,0,0,0,110.861-3.236c47,94,178,113,251,33,31.385,4.116,60.563,2.495,86.487-3.311,25.924,5.806,55.1,7.427,86.488,3.311,73,80,204,61,251-33a165.625,165.625,0,0,0,120,0c51,13,108,15,157-5a147.188,147.188,0,0,0,33.5-18.694,147.217,147.217,0,0,0,33.5,18.694c49,20,106,18,157,5a165.625,165.625,0,0,0,120,0c47,94,178,113,251,33C2446.709,1093.793,2554.709,922.793,2379.709,863.793Z" transform="translate(142.69 -634.312)" fill="#eee"/>
-  </svg>
-
 </div>
