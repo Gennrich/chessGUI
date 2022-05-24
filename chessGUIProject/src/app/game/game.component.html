@@ -4,33 +4,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Schwach Matt</title>
+    <title>Game</title>
+    <script>
+        let canvas;
+        let ctx; 
+        let backgroundImage = new Image();
+
+        let chessfield = {
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+            src: 'img/chessfield.png'
+        };
+
+        function startGame() {
+            canvas = document.getElementById('canvas');
+            ctx = canvas.getContext('2d'); //erst später Var befüllen, wenn Seite fertig geladen ist
+            loadImages();
+            draw();
+            //calculate
+        }
+
+        function loadImages() {
+            backgroundImage.src = 'img/chessfield.png';
+            chessfield.img = new Image();
+            chessfield.img.src = chessfield.src;
+        }
+
+        function draw() {
+            ctx.drawImage(backgroundImage, 0, 0);
+            ctx.drawImage(chessfield.img, chessfield.x, chessfield.y, chessfield.width, chessfield.height);
+            requestAnimationFrame(draw);
+        }
+    </script>
 
 </head>
-<body>
-    <!-- Zeichenfläche für das Schachbrett -->
-    <!-- <div id="drawfield">
-        <canvas width="1600" height="1600"></canvas>
-    </div>
-    <input type="submit" onclick="coordinates()" value="ACTIVATE & CLICK YELLOW BOX" /><br/>
-    <script type="text/javascript">
-        var coordinates = function () {
-            document.getElementById("drawfield").addEventListener("click", boxClicked);
-        }
-        function boxClicked() {
-            alert("Client X: " + window.event.clientX + " ClientY: "
-            + window.event.clientY);
-            
-            alert("offsetX: " + window.event.offsetX + " offsetY: "
-            + window.event.offsetY);
-            
-            alert("screen X: " + window.event.screenX + " screenY: "
-            + window.event.screenY);
-        }
-    </script> -->
 
-<button id="btn">Click me with any mouse button: left, right, middle, ...</button>
-<p id="message"></p>
-    
+<body>
+    <script>
+        startGame();
+    </script>
+    <canvas id="canvas" width="600" height="600"></canvas>
 </body>
+
 </html>
