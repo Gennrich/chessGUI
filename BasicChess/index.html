@@ -6,37 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <style type="text/css">
-        #yellowBox {
-            height: 80px;
-            width: 80px;
-            background-color: yellow;
-        }
-    </style>
-
-</head>
-<body>
-    <div id="myDiv"></div>
+    <link rel="stylesheet" href="index.css">
     <script src="index.js"></script>
 
-    <div id="yellowBox"> </div>  
-    <input type="submit" onclick="coordinates()" value="ACTIVATE & CLICK YELLOW BOX" /><br/>
-    <!-- MOUSE EVENTS  -->
-    <script type="text/javascript">
-        var coordinates = function () {
-            document.getElementById("yellowBox").addEventListener("click", yellowBoxClick);
-        }
-        function yellowBoxClick() {
-            alert("Client X: " + window.event.clientX + " ClientY: "
-            + window.event.clientY);
-            
-            alert("offsetX: " + window.event.offsetX + " offsetY: "
-            + window.event.offsetY);
-            
-            alert("screen X: " + window.event.screenX + " screenY: "
-            + window.event.screenY);
-        }
-    </script>
+</head>
+<body onload="startGame()">
+    <!-- Größe des Canvas muss in html festgelegt werden -->
+    <canvas id="canvas" width="850" height="850"></canvas>
+    
 
 </body>
 </html>
