@@ -1,6 +1,7 @@
 let canvas;
 let ctx;
 let backgroundImage = new Image(); 
+var playerSelected = new Boolean(false);
 
 let figur = {
     width: 100,
@@ -214,6 +215,7 @@ let bauer_weiss_8 = {
 function mouseListener() {
     console.log("X: " + window.event.offsetX + " Y: "
     + window.event.offsetY);
+    playerSelected = !playerSelected;
 }
 
 function startGame() {
@@ -228,9 +230,7 @@ function startGame() {
     console.log("Draw erfolgreich");
 }
 
-function update() {
 
-}
 
 function loadImages() {
     backgroundImage.src = 'img/chessFieldWithRand.png';
@@ -340,7 +340,11 @@ function loadImages() {
 function draw() {
     ctx.drawImage(backgroundImage, 0, 0, 850, 850);
 
-    ctx.drawImage(selected.img, 125, 125,  figur.width, figur.height);
+    if(playerSelected == true)
+    {
+        ctx.drawImage(selected.img, 125, 125,  figur.width, figur.height);
+    }
+    
 
     //Schwarze Figuren
     ctx.drawImage(turm_black.img, turm_black.x, turm_black.y,  figur.width, figur.height);
@@ -378,4 +382,13 @@ function draw() {
     ctx.drawImage(bauer_weiss_7.img, bauer_weiss_7.x, bauer_weiss_7.y,  figur.width, figur.height);
     ctx.drawImage(bauer_weiss_8.img, bauer_weiss_8.x, bauer_weiss_8.y,  figur.width, figur.height);
     requestAnimationFrame(draw);
+}
+
+function update() {
+    
+    if(playerSelected == true)
+    {
+        ctx.drawImage(selected.img, 125, 125,  figur.width, figur.height);
+    }
+
 }
