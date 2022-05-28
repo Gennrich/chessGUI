@@ -2,6 +2,26 @@ let canvas;
 let ctx;
 let backgroundImage = new Image(); 
 var playerSelected = new Boolean(false);
+var figures = [ //Figuren von oben links nach unten rechts (Groß: Schwarz, Klein: weiß)
+    ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
+    ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+    ['0', '0', '0', '0', '0', '0', '0', '0'],
+    ['0', '0', '0', '0', '0', '0', '0', '0'],
+    ['0', '0', '0', '0', '0', '0', '0', '0'],
+    ['0', '0', '0', '0', '0', '0', '0', '0'],
+    ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+    ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r']];
+
+var fieldX = 0; //Mouseclick Koordinaten
+var fieldY = 0; //Mouseclick Koordinaten
+var x; //Eckkoordinaten oben links des Feldes
+var y; //Eckkoordinaten oben links des Feldes
+var fieldNumberX = 0; //Feldzahl des ausgewählten Spielers
+var fieldNumberY = 0; //Feldzahl des ausgewählten Spielers
+var targetNumberX = 0; //Zielfeld
+var targetNumberY = 0; //Zielfeld
+var currentFigur = '0'; //aktuelle Figur
+
 
 let figur = {
     width: 100,
@@ -45,68 +65,8 @@ let koenig_black = {
     src: 'img/koenig_black.png'
 };
 
-let laeufer_black_2 = {
-    x: 525,
-    y: 25,
-    src: 'img/laeufer_black.png'
-};
-
-let pferd_black_2 = {
-    x: 625,
-    y: 25,
-    src: 'img/pferd_black.png'
-};
-
-let turm_black_2 = {
-    x: 725,
-    y: 25,
-    src: 'img/turm_black.png'
-};
-
-let bauer_black_1 = {
+let bauer_black = {
     x: 25,
-    y: 125,
-    src: 'img/bauer_black.png'
-};
-
-let bauer_black_2 = {
-    x: 125,
-    y: 125,
-    src: 'img/bauer_black.png'
-};
-
-let bauer_black_3 = {
-    x: 225,
-    y: 125,
-    src: 'img/bauer_black.png'
-};
-
-let bauer_black_4 = {
-    x: 325,
-    y: 125,
-    src: 'img/bauer_black.png'
-};
-
-let bauer_black_5 = {
-    x: 425,
-    y: 125,
-    src: 'img/bauer_black.png'
-};
-
-let bauer_black_6 = {
-    x: 525,
-    y: 125,
-    src: 'img/bauer_black.png'
-};
-
-let bauer_black_7 = {
-    x: 625,
-    y: 125,
-    src: 'img/bauer_black.png'
-};
-
-let bauer_black_8 = {
-    x: 725,
     y: 125,
     src: 'img/bauer_black.png'
 };
@@ -143,79 +103,76 @@ let koenig_weiss = {
     src: 'img/koenig_weiss.png'
 };
 
-let laeufer_weiss_2 = {
-    x: 525,
-    y: 725,
-    src: 'img/laeufer_weiss.png'
-};
-
-let pferd_weiss_2 = {
-    x: 625,
-    y: 725,
-    src: 'img/pferd_weiss.png'
-};
-
-let turm_weiss_2 = {
-    x: 725,
-    y: 725,
-    src: 'img/turm_weiss.png'
-};
-
-let bauer_weiss_1 = {
+let bauer_weiss = {
     x: 25,
     y: 625,
     src: 'img/bauer_weiss.png'
 };
 
-let bauer_weiss_2 = {
-    x: 125,
-    y: 625,
-    src: 'img/bauer_weiss.png'
-};
-
-let bauer_weiss_3 = {
-    x: 225,
-    y: 625,
-    src: 'img/bauer_weiss.png'
-};
-
-let bauer_weiss_4 = {
-    x: 325,
-    y: 625,
-    src: 'img/bauer_weiss.png'
-};
-
-let bauer_weiss_5 = {
-    x: 425,
-    y: 625,
-    src: 'img/bauer_weiss.png'
-};
-
-let bauer_weiss_6 = {
-    x: 525,
-    y: 625,
-    src: 'img/bauer_weiss.png'
-};
-
-let bauer_weiss_7 = {
-    x: 625,
-    y: 625,
-    src: 'img/bauer_weiss.png'
-};
-
-let bauer_weiss_8 = {
-    x: 725,
-    y: 625,
-    src: 'img/bauer_weiss.png'
-};
-
-
 
 // MOUSE EVENTS
 function mouseListener() {
-    console.log("X: " + window.event.offsetX + " Y: "
-    + window.event.offsetY);
-    playerSelected = !playerSelected;
+    
+    fieldX = window.event.offsetX;
+    fieldY = window.event.offsetY;
+
+    if(playerSelected == false) {
+        switch(true) {
+            case (fieldX >= 725): x = 725; fieldNumberX = 7; break;
+            case (fieldX >= 625): x = 625; fieldNumberX = 6; break;
+            case (fieldX >= 525): x = 525; fieldNumberX = 5; break;
+            case (fieldX >= 425): x = 425; fieldNumberX = 4; break;
+            case (fieldX >= 325): x = 325; fieldNumberX = 3; break;
+            case (fieldX >= 225): x = 225; fieldNumberX = 2; break;
+            case (fieldX >= 125): x = 125; fieldNumberX = 1; break;
+            case (fieldX >= 25): x = 25; fieldNumberX = 0; break;
+            default: break;
+        }
+        switch(true) {
+            case (fieldY >= 725): y = 725; fieldNumberY = 7; break;
+            case (fieldY >= 625): y = 625; fieldNumberY = 6; break;
+            case (fieldY >= 525): y = 525; fieldNumberY = 5; break;
+            case (fieldY >= 425): y = 425; fieldNumberY = 4; break;
+            case (fieldY >= 325): y = 325; fieldNumberY = 3; break;
+            case (fieldY >= 225): y = 225; fieldNumberY = 2; break;
+            case (fieldY >= 125): y = 125; fieldNumberY = 1; break;
+            case (fieldY >= 25): y = 25; fieldNumberY = 0; break;
+            default: break;
+        }
+        currentFigur = (figures[fieldNumberY][fieldNumberX]);
+        console.log("fieldX: " + window.event.offsetX + " fieldY: " + window.event.offsetY);
+        console.log("NumberX: " + fieldNumberX + " NumberY: " + fieldNumberY);
+        console.log("Figur: " + currentFigur);
+        playerSelected = true;
+    }
+    else 
+    {
+        switch(true) {
+            case (fieldX >= 725): x = 725; targetNumberX = 7; break;
+            case (fieldX >= 625): x = 625; targetNumberX = 6; break;
+            case (fieldX >= 525): x = 525; targetNumberX = 5; break;
+            case (fieldX >= 425): x = 425; targetNumberX = 4; break;
+            case (fieldX >= 325): x = 325; targetNumberX = 3; break;
+            case (fieldX >= 225): x = 225; targetNumberX = 2; break;
+            case (fieldX >= 125): x = 125; targetNumberX = 1; break;
+            case (fieldX >= 25): x = 25; targetNumberX = 0; break;
+            default: break;
+        }
+        switch(true) {
+            case (fieldY >= 725): y = 725; targetNumberY = 7; break;
+            case (fieldY >= 625): y = 625; targetNumberY = 6; break;
+            case (fieldY >= 525): y = 525; targetNumberY = 5; break;
+            case (fieldY >= 425): y = 425; targetNumberY = 4; break;
+            case (fieldY >= 325): y = 325; targetNumberY = 3; break;
+            case (fieldY >= 225): y = 225; targetNumberY = 2; break;
+            case (fieldY >= 125): y = 125; targetNumberY = 1; break;
+            case (fieldY >= 25): y = 25; targetNumberY = 0; break;
+            default: break;
+        }
+        console.log("TargetX: " + targetNumberX + " TargetY: " + targetNumberY);
+        playerSelected = false;
+    }
+
 }
 
 function startGame() {
@@ -226,8 +183,10 @@ function startGame() {
     console.log("Start Game erfolgreich");
     loadImages();
     console.log("Load Images erfolgreich");
+    initialDraw();
+    console.log("Initial Draw erfolgreich");
     draw();
-    console.log("Draw erfolgreich");
+    //setInterval(update, 1000 / 25); //update wird 25 Mal in der Sekunde aufgerufen
 }
 
 
@@ -254,38 +213,8 @@ function loadImages() {
     koenig_black.img = new Image();
     koenig_black.img.src = koenig_black.src;
 
-    laeufer_black_2.img = new Image();
-    laeufer_black_2.img.src = laeufer_black_2.src;
-
-    pferd_black_2.img = new Image();
-    pferd_black_2.img.src = pferd_black_2.src;
-
-    turm_black_2.img = new Image();
-    turm_black_2.img.src = turm_black_2.src;
-
-    bauer_black_1.img = new Image();
-    bauer_black_1.img.src = bauer_black_1.src;
-
-    bauer_black_2.img = new Image();
-    bauer_black_2.img.src = bauer_black_2.src;
-
-    bauer_black_3.img = new Image();
-    bauer_black_3.img.src = bauer_black_3.src;
-
-    bauer_black_4.img = new Image();
-    bauer_black_4.img.src = bauer_black_4.src;
-
-    bauer_black_5.img = new Image();
-    bauer_black_5.img.src = bauer_black_5.src;
-
-    bauer_black_6.img = new Image();
-    bauer_black_6.img.src = bauer_black_6.src;
-
-    bauer_black_7.img = new Image();
-    bauer_black_7.img.src = bauer_black_7.src;
-
-    bauer_black_8.img = new Image();
-    bauer_black_8.img.src = bauer_black_8.src;
+    bauer_black.img = new Image();
+    bauer_black.img.src = bauer_black.src;
 
     //Weisse Figuren
     turm_weiss.img = new Image();
@@ -303,92 +232,76 @@ function loadImages() {
     koenig_weiss.img = new Image();
     koenig_weiss.img.src = koenig_weiss.src;
 
-    laeufer_weiss_2.img = new Image();
-    laeufer_weiss_2.img.src = laeufer_weiss_2.src;
+    bauer_weiss.img = new Image();
+    bauer_weiss.img.src = bauer_weiss.src;
+}
 
-    pferd_weiss_2.img = new Image();
-    pferd_weiss_2.img.src = pferd_weiss_2.src;
+function initialDraw() {
 
-    turm_weiss_2.img = new Image();
-    turm_weiss_2.img.src = turm_weiss_2.src;
-
-    bauer_weiss_1.img = new Image();
-    bauer_weiss_1.img.src = bauer_weiss_1.src;
-
-    bauer_weiss_2.img = new Image();
-    bauer_weiss_2.img.src = bauer_weiss_2.src;
-
-    bauer_weiss_3.img = new Image();
-    bauer_weiss_3.img.src = bauer_weiss_3.src;
-
-    bauer_weiss_4.img = new Image();
-    bauer_weiss_4.img.src = bauer_weiss_4.src;
-
-    bauer_weiss_5.img = new Image();
-    bauer_weiss_5.img.src = bauer_weiss_5.src;
-
-    bauer_weiss_6.img = new Image();
-    bauer_weiss_6.img.src = bauer_weiss_6.src;
-
-    bauer_weiss_7.img = new Image();
-    bauer_weiss_7.img.src = bauer_weiss_7.src;
-
-    bauer_weiss_8.img = new Image();
-    bauer_weiss_8.img.src = bauer_weiss_8.src;
 }
 
 function draw() {
     ctx.drawImage(backgroundImage, 0, 0, 850, 850);
-
     if(playerSelected == true)
     {
-        ctx.drawImage(selected.img, 125, 125,  figur.width, figur.height);
+        ctx.drawImage(selected.img, x, y,  figur.width, figur.height);
     }
     
-
-    //Schwarze Figuren
-    ctx.drawImage(turm_black.img, turm_black.x, turm_black.y,  figur.width, figur.height);
-    ctx.drawImage(pferd_black.img, pferd_black.x, pferd_black.y,  figur.width, figur.height);
-    ctx.drawImage(laeufer_black.img, laeufer_black.x, laeufer_black.y,  figur.width, figur.height);
-    ctx.drawImage(dame_black.img, dame_black.x, dame_black.y,  figur.width, figur.height);
-    ctx.drawImage(koenig_black.img, koenig_black.x, koenig_black.y,  figur.width, figur.height);
-    ctx.drawImage(laeufer_black_2.img, laeufer_black_2.x, laeufer_black_2.y,  figur.width, figur.height);
-    ctx.drawImage(pferd_black_2.img, pferd_black_2.x, pferd_black_2.y,  figur.width, figur.height);
-    ctx.drawImage(turm_black_2.img, turm_black_2.x, turm_black_2.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_black_1.img, bauer_black_1.x, bauer_black_1.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_black_2.img, bauer_black_2.x, bauer_black_2.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_black_3.img, bauer_black_3.x, bauer_black_3.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_black_4.img, bauer_black_4.x, bauer_black_4.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_black_5.img, bauer_black_5.x, bauer_black_5.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_black_6.img, bauer_black_6.x, bauer_black_6.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_black_7.img, bauer_black_7.x, bauer_black_7.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_black_8.img, bauer_black_8.x, bauer_black_8.y,  figur.width, figur.height);
-
-    //Weisse Figuren
-    ctx.drawImage(turm_weiss.img, turm_weiss.x, turm_weiss.y,  figur.width, figur.height);
-    ctx.drawImage(pferd_weiss.img, pferd_weiss.x, pferd_weiss.y,  figur.width, figur.height);
-    ctx.drawImage(laeufer_weiss.img, laeufer_weiss.x, laeufer_weiss.y,  figur.width, figur.height);
-    ctx.drawImage(dame_weiss.img, dame_weiss.x, dame_weiss.y,  figur.width, figur.height);
-    ctx.drawImage(koenig_weiss.img, koenig_weiss.x, koenig_weiss.y,  figur.width, figur.height);
-    ctx.drawImage(laeufer_weiss_2.img, laeufer_weiss_2.x, laeufer_weiss_2.y,  figur.width, figur.height);
-    ctx.drawImage(pferd_weiss_2.img, pferd_weiss_2.x, pferd_weiss_2.y,  figur.width, figur.height);
-    ctx.drawImage(turm_weiss_2.img, turm_weiss_2.x, turm_weiss_2.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_weiss_1.img, bauer_weiss_1.x, bauer_weiss_1.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_weiss_2.img, bauer_weiss_2.x, bauer_weiss_2.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_weiss_3.img, bauer_weiss_3.x, bauer_weiss_3.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_weiss_4.img, bauer_weiss_4.x, bauer_weiss_4.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_weiss_5.img, bauer_weiss_5.x, bauer_weiss_5.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_weiss_6.img, bauer_weiss_6.x, bauer_weiss_6.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_weiss_7.img, bauer_weiss_7.x, bauer_weiss_7.y,  figur.width, figur.height);
-    ctx.drawImage(bauer_weiss_8.img, bauer_weiss_8.x, bauer_weiss_8.y,  figur.width, figur.height);
+    for (var i = 0; i < 8; i++) 
+    {
+        for (var j = 0; j < 8; j++) 
+        {
+            currentFigur = (figures[j][i]);
+            if(getImageSrc(currentFigur) == 'empty') // leeres Feld
+            {
+            }
+            else
+            {
+                ctx.drawImage(getImageSrc(currentFigur), getCoordinates(i), getCoordinates(j),  figur.width, figur.height);
+            }
+            
+        }
+    }
     requestAnimationFrame(draw);
+}
+
+function getImageSrc(c) { //gibt das passende Bild zu der Figur zurück
+    var src;
+    switch(c) {
+        case 'R': src = turm_black.img; break;
+        case 'N': src = pferd_black.img; break;
+        case 'B': src = laeufer_black.img; break;
+        case 'Q': src = dame_black.img; break;
+        case 'K': src = koenig_black.img; break;
+        case 'P': src = bauer_black.img; break;
+        case 'r': src = turm_weiss.img; break;
+        case 'n': src = pferd_weiss.img; break;
+        case 'b': src = laeufer_weiss.img; break;
+        case 'q': src = dame_weiss.img; break;
+        case 'k': src = koenig_weiss.img; break;
+        case 'p': src = bauer_weiss.img; break;
+        default: src = 'empty';
+    }
+    return src;
+}
+
+function getCoordinates(i) {
+    var coord;
+    switch (i) {
+        case 0: coord = 25; break;
+        case 1: coord = 125; break;
+        case 2: coord = 225; break;
+        case 3: coord = 325; break;
+        case 4: coord = 425; break;
+        case 5: coord = 525; break;
+        case 6: coord = 625; break;
+        case 7: coord = 725; break;
+    }
+    return coord;
 }
 
 function update() {
     
-    if(playerSelected == true)
-    {
-        ctx.drawImage(selected.img, 125, 125,  figur.width, figur.height);
-    }
+
 
 }
