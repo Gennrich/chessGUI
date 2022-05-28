@@ -20,7 +20,8 @@ var fieldNumberX = 0; //Feldzahl des ausgewählten Spielers
 var fieldNumberY = 0; //Feldzahl des ausgewählten Spielers
 var targetNumberX = 0; //Zielfeld
 var targetNumberY = 0; //Zielfeld
-var currentFigur = '0'; //aktuelle Figur
+var currentFigur = '0'; //aktuelle Figur Array
+var currentFigurDraw = '0'; //aktuelle Figur Zeichnung
 
 
 let figur = {
@@ -171,8 +172,10 @@ function mouseListener() {
         }
         console.log("TargetX: " + targetNumberX + " TargetY: " + targetNumberY);
         playerSelected = false;
-    }
 
+        figures[targetNumberY][targetNumberX] = currentFigur;
+        figures[fieldNumberY][fieldNumberX] = '0';
+    }
 }
 
 function startGame() {
@@ -246,22 +249,22 @@ function draw() {
     {
         ctx.drawImage(selected.img, x, y,  figur.width, figur.height);
     }
-    
+
     for (var i = 0; i < 8; i++) 
-    {
-        for (var j = 0; j < 8; j++) 
         {
-            currentFigur = (figures[j][i]);
-            if(getImageSrc(currentFigur) == 'empty') // leeres Feld
+            for (var j = 0; j < 8; j++) 
             {
+                currentFigurDraw = (figures[j][i]);
+                if(getImageSrc(currentFigurDraw) == 'empty') // leeres Feld
+                {
+                }
+                else
+                {
+                    ctx.drawImage(getImageSrc(currentFigurDraw), getCoordinates(i), getCoordinates(j),  figur.width, figur.height);
+                }
+                
             }
-            else
-            {
-                ctx.drawImage(getImageSrc(currentFigur), getCoordinates(i), getCoordinates(j),  figur.width, figur.height);
-            }
-            
         }
-    }
     requestAnimationFrame(draw);
 }
 
