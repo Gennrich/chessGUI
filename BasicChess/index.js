@@ -31,6 +31,9 @@ var zeitanzeigePl; //Player
 
 var playerTurn = new Boolean(true); //Spieler ist zu Beginn am Zug
 
+//Zug zurück
+var lastMove = ['0', '0', '0', '0']; //X & Y Pos Startfeld, X & Y Pos Zielfeld
+
 
 let figur = {
     width: 100,
@@ -152,6 +155,8 @@ function mouseListener() {
         console.log("fieldX: " + window.event.offsetX + " fieldY: " + window.event.offsetY);
         console.log("NumberX: " + fieldNumberX + " NumberY: " + fieldNumberY);
         console.log("Figur: " + currentFigur);
+        lastMove[0] = fieldNumberX;
+        lastMove[1] = fieldNumberY;
         playerSelected = true;
     }
     else 
@@ -184,6 +189,9 @@ function mouseListener() {
         //Aktualisierung der Figurenposition im Array
         figures[targetNumberY][targetNumberX] = currentFigur;
         figures[fieldNumberY][fieldNumberX] = '0';
+
+        lastMove[2] = targetNumberX;
+        lastMove[3] = targetNumberY;
     }
 }
 
@@ -405,4 +413,15 @@ function myMove() {
       elem.style.top = pos + 'px';
     }
   }
+}
+
+function undoMove() 
+{
+    currentFigur = figures[lastMove[3]][lastMove[2]];
+    if(currentFigur != '0')
+    {
+        figures[lastMove[3]][lastMove[2]] = '0';
+        figures[lastMove[1]][lastMove[0]] = currentFigur;
+        console.log("Zug zurück")
+    }
 }
