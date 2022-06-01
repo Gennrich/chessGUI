@@ -173,6 +173,7 @@ function mouseListener() {
         console.log("TargetX: " + targetNumberX + " TargetY: " + targetNumberY);
         playerSelected = false;
 
+        //Aktualisierung der Figurenposition im Array
         figures[targetNumberY][targetNumberX] = currentFigur;
         figures[fieldNumberY][fieldNumberX] = '0';
     }
