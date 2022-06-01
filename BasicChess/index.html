@@ -14,28 +14,70 @@
     
     <!-- Aufruf um eine Sekunde verzögert. -->
     
-        <form name="AnzeigeCom" >
-            <div style="float:left"><fon>Schwach Matt &ensp;</fon></div>
-            <input size=7 name="Zeit" id="AnzeigefeldCom"> 
-        </form>
-        <p></p>
-        <form name="AnzeigePl" >
-            <div style="float:left"><fon>Player &ensp;</fon></div>
-            <input size=7 name="Zeit" id="AnzeigefeldPl"> 
-        </form>
-        <p></p>
-    <!-- Größe des Canvas muss in html festgelegt werden -->
-    <canvas id="canvas" width="850" height="850"></canvas>
+
     
-    <!-- Bewertungsanzeige -->
-    <div style="float:right">
-        <p><fon>Bewertung:</fon></p>
-        <div id ="Bewertungsanzeige">
-            <div id ="myAnimation"></div>
-        </div>
+    <div style="float:left">
+         
     </div>
-    <p></p>
-    <button onclick="undoMove()">Zug zurück</button> 
+    
+    <div style="float:right">
+        
+        
+
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th colspan="3"><h2><fon>Schwach Matt</fon></h2></th>
+            </tr>
+        </thead>
+        
+        
+        <tr>
+            <td>
+                <form name="AnzeigeCom" >
+                    <div style="float:left"><fon>Schwach Matt &ensp;</fon></div>
+                    <input size=7 name="Zeit" id="AnzeigefeldCom"> 
+                </form>
+                <p></p>
+                <form name="AnzeigePl" >
+                    <div style="float:left"><fon>Player &ensp;</fon></div>
+                    <input size=7 name="Zeit" id="AnzeigefeldPl"> 
+                </form>
+            </td>
+            <td width="200px">
+                <fon>Bewertung</fon>
+            </td>
+            <td>
+                <fon>Zughistorie</fon>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <!-- Größe des Canvas muss in html festgelegt werden -->
+                <canvas id="canvas" width="850" height="850"></canvas>
+                <p></p>
+                <!-- Zug zurück -->
+                <button onclick="undoMove()">Zug zurück</button>
+            </td>
+            <td>
+                <!-- Bewertungsanzeige -->
+                <div id ="Bewertungsanzeige">
+                    <div id ="myAnimation"></div>
+                </div>
+            </td>
+            <td>
+                <p>D2 --> D4</p>
+                <p>D2 --> D4</p>
+                <p>D2 --> D4</p>
+            </td>
+        </tr>
+    </table>
+    
+    
+
+    
 
 </body>
 </html>

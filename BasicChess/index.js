@@ -400,7 +400,7 @@ function timeOver()
 
 var id = null;
 
-function myMove() {
+function myMove() {  //Bewertungsfunktion Animation
   var elem = document.getElementById("myAnimation");
   var pos = 800;
   clearInterval(id);
@@ -415,7 +415,7 @@ function myMove() {
   }
 }
 
-function undoMove() 
+function undoMove() //macht den letzten Zug rückgängig
 {
     currentFigur = figures[lastMove[3]][lastMove[2]];
     if(currentFigur != '0')
@@ -424,4 +424,9 @@ function undoMove()
         figures[lastMove[1]][lastMove[0]] = currentFigur;
         console.log("Zug zurück")
     }
+}
+
+function Zugfolge() //Zeigt die vollständige Zughistorie an
+{
+
 }

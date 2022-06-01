@@ -23,3 +23,7 @@ fon {
     border: 1px;
     border-color: black;
   }
+
+  #Zughistorie {
+      float: left;
+  }
