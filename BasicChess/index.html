@@ -10,20 +10,30 @@
     <script src="index.js"></script>
 
 </head>
-<body onload="startGame(), window.setTimeout('ZeitAnzeigen()', 1000)">
+<body onload="startGame(), window.setTimeout('ZeitAnzeigenCom()', 1000), window.setTimeout('ZeitAnzeigenPl()', 1000), myMove()">
     
     <!-- Aufruf um eine Sekunde verzögert. -->
-    <form name="Anzeige" >
-        <p>
+    
+        <form name="AnzeigeCom" >
             <div style="float:left"><fon>Schwach Matt &ensp;</fon></div>
-            <!-- Eingabefeld wird als Ausgabe genutzt -->
-            <input size=7 name="Zeit" id="Anzeigefeld"> 
-        </p>
-        
-    </form>
+            <input size=7 name="Zeit" id="AnzeigefeldCom"> 
+        </form>
+        <p></p>
+        <form name="AnzeigePl" >
+            <div style="float:left"><fon>Player &ensp;</fon></div>
+            <input size=7 name="Zeit" id="AnzeigefeldPl"> 
+        </form>
+        <p></p>
     <!-- Größe des Canvas muss in html festgelegt werden -->
     <canvas id="canvas" width="850" height="850"></canvas>
     
+    <!-- Bewertungsanzeige -->
+    <div style="float:right">
+        <p><fon>Bewertung:</fon></p>
+        <div id ="Bewertungsanzeige">
+            <div id ="myAnimation"></div>
+        </div>
+    </div>
 
 </body>
 </html>

@@ -23,9 +23,13 @@ var targetNumberY = 0; //Zielfeld
 var currentFigur = '0'; //aktuelle Figur Array
 var currentFigurDraw = '0'; //aktuelle Figur Zeichnung
 
+//Zeitanzeige
 Jetzt = new Date();  //neues Datumsobjekt mit aktuellem Zeitpunkt
 var Start = (Jetzt.getTime()) + 300000; //getTime(): absolute Zahl in Millisekunden + 5 Minuten
-var zeitanzeige;
+var zeitanzeigeCom; //Computer
+var zeitanzeigePl; //Player
+
+var playerTurn = new Boolean(true); //Spieler ist zu Beginn am Zug
 
 
 let figur = {
@@ -187,7 +191,8 @@ function startGame() {
     document.getElementById("canvas").addEventListener("click", mouseListener); //Mouse Listener
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
-    zeitanzeige = document.getElementById('Anzeigefeld');
+    zeitanzeigeCom = document.getElementById('AnzeigefeldCom');
+    zeitanzeigePl = document.getElementById('AnzeigefeldPl');
     
     console.log("Start Game erfolgreich");
     loadImages();
@@ -315,27 +320,39 @@ function update() {
 }
 
 
-function ZeitAnzeigen() 
+function ZeitAnzeigenCom() //Zeitanzeige Computer
 { 
-    var absSekunden = Math.round(ZeitBerechnen()); //Bruchwert wird auf Ganzzahl gerundet
+    var absSekunden = Math.round(ZeitBerechnenCom()); //Bruchwert wird auf Ganzzahl gerundet
     var relSekunden = absSekunden % 60;
     var absMinuten = Math.round((absSekunden-30)/60);
     var anzSekunden ="" + ((relSekunden > 9) ? relSekunden : "0" + relSekunden);
     var anzMinuten ="" + ((absMinuten > 9) ? absMinuten : "0" + absMinuten);
-    window.document.Anzeige.Zeit.value = anzMinuten + ":" + anzSekunden; //Anzeige wird beschrieben
+    window.document.AnzeigeCom.Zeit.value = anzMinuten + ":" + anzSekunden; //Anzeige wird beschrieben
     
-    window.setTimeout('ZeitAnzeigen()',1000); //Zeitanzeige wird jede Sekunde aufgerufen
+    window.setTimeout('ZeitAnzeigenCom()',1000); //Zeitanzeige wird jede Sekunde aufgerufen
+}
+
+function ZeitAnzeigenPl() //Zeitanzeige Spieler
+{ 
+    var absSekunden = Math.round(ZeitBerechnenPl()); //Bruchwert wird auf Ganzzahl gerundet
+    var relSekunden = absSekunden % 60;
+    var absMinuten = Math.round((absSekunden-30)/60);
+    var anzSekunden ="" + ((relSekunden > 9) ? relSekunden : "0" + relSekunden);
+    var anzMinuten ="" + ((absMinuten > 9) ? absMinuten : "0" + absMinuten);
+    window.document.AnzeigePl.Zeit.value = anzMinuten + ":" + anzSekunden; //Anzeige wird beschrieben
+    
+    window.setTimeout('ZeitAnzeigenPl()',1000); //Zeitanzeige wird jede Sekunde aufgerufen
 }
    
 // Erzeugt beim Aufruf ein neues Datumsobjekt mit aktueller Zeit
-function ZeitBerechnen()
+function ZeitBerechnenCom()
 { 
     var Immernoch = new Date(); 
     if(((Start - Immernoch.getTime())/1000) > 0)
     {
         if(((Start - Immernoch.getTime())/1000) < 280)
         {
-            zeitanzeige.style.backgroundColor = "red";
+            zeitanzeigeCom.style.backgroundColor = "red";
         }
         return((Start - Immernoch.getTime())/1000); //Gibt Differenz zu Startzeitpunkt zurück
 
@@ -348,7 +365,44 @@ function ZeitBerechnen()
     
 }
 
+function ZeitBerechnenPl()
+{ 
+    var Immernoch = new Date(); 
+    if(((Start - Immernoch.getTime())/1000) > 0)
+    {
+        if(((Start - Immernoch.getTime())/1000) < 280)
+        {
+            zeitanzeigePl.style.backgroundColor = "red";
+        }
+        return((Start - Immernoch.getTime())/1000); //Gibt Differenz zu Startzeitpunkt zurück
+    }
+    else
+    {
+        timeOver();
+        return(0);
+    }
+    
+}
+
 function timeOver()
 {
     console.log("Zeit vorbei");
+}
+
+
+var id = null;
+
+function myMove() {
+  var elem = document.getElementById("myAnimation");
+  var pos = 800;
+  clearInterval(id);
+  id = setInterval(frame, 10);
+  function frame() {
+    if (pos == 0) {
+      clearInterval(id);
+    } else {
+      pos--;
+      elem.style.top = pos + 'px';
+    }
+  }
 }
