@@ -33,7 +33,10 @@ var playerTurn = new Boolean(true); //Spieler ist zu Beginn am Zug
 
 //Zug zurück
 var lastMove = ['0', '0', '0', '0']; //X & Y Pos Startfeld, X & Y Pos Zielfeld
-
+var zugCounter = 0;
+//Variablen für farbige Markierung des letzten Zuges
+var x1, x2;
+var y1, y2;
 
 let figur = {
     width: 100,
@@ -44,6 +47,12 @@ let selected = {
     width: 100,
     height: 100,
     src: 'img/selected.png'
+};
+
+let selected2 = {
+    width: 100,
+    height: 100,
+    src: 'img/selected2.png'
 };
 
 //--------------------Schwarze Figuren --------------------------------------
@@ -152,12 +161,16 @@ function mouseListener() {
             default: break;
         }
         currentFigur = (figures[fieldNumberY][fieldNumberX]);
-        console.log("fieldX: " + window.event.offsetX + " fieldY: " + window.event.offsetY);
-        console.log("NumberX: " + fieldNumberX + " NumberY: " + fieldNumberY);
-        console.log("Figur: " + currentFigur);
-        lastMove[0] = fieldNumberX;
-        lastMove[1] = fieldNumberY;
-        playerSelected = true;
+
+        if(currentFigur != '0')
+        {
+            console.log("fieldX: " + window.event.offsetX + " fieldY: " + window.event.offsetY);
+            console.log("NumberX: " + fieldNumberX + " NumberY: " + fieldNumberY);
+            console.log("Figur: " + currentFigur);
+            lastMove[0] = fieldNumberX;
+            lastMove[1] = fieldNumberY;
+            playerSelected = true;
+        }
     }
     else 
     {
@@ -183,15 +196,29 @@ function mouseListener() {
             case (fieldY >= 25): y = 25; targetNumberY = 0; break;
             default: break;
         }
-        console.log("TargetX: " + targetNumberX + " TargetY: " + targetNumberY);
-        playerSelected = false;
+        if((fieldNumberX == targetNumberX) && (fieldNumberY == targetNumberY))
+        {
+            playerSelected = false;
+        }
+        else
+        {
+            console.log("TargetX: " + targetNumberX + " TargetY: " + targetNumberY);
+            playerSelected = false;
 
-        //Aktualisierung der Figurenposition im Array
-        figures[targetNumberY][targetNumberX] = currentFigur;
-        figures[fieldNumberY][fieldNumberX] = '0';
+            //Aktualisierung der Figurenposition im Array
+            figures[targetNumberY][targetNumberX] = currentFigur;
+            figures[fieldNumberY][fieldNumberX] = '0';
 
-        lastMove[2] = targetNumberX;
-        lastMove[3] = targetNumberY;
+            lastMove[2] = targetNumberX;
+            lastMove[3] = targetNumberY;
+            zugCounter++;
+            //Speichert Koordinaten für den zuletzt getätigten Zug
+            x1 = getCoordinates(lastMove[0]);
+            y1 = getCoordinates(lastMove[1]);
+            x2 = getCoordinates(lastMove[2]);
+            y2 = getCoordinates(lastMove[3]);
+        }
+        
     }
 }
 
@@ -205,8 +232,6 @@ function startGame() {
     console.log("Start Game erfolgreich");
     loadImages();
     console.log("Load Images erfolgreich");
-    initialDraw();
-    console.log("Initial Draw erfolgreich");
     draw();
     //setInterval(update, 1000 / 25); //update wird 25 Mal in der Sekunde aufgerufen
 }
@@ -218,6 +243,9 @@ function loadImages() {
 
     selected.img = new Image();
     selected.img.src = selected.src;
+
+    selected2.img = new Image();
+    selected2.img.src = selected2.src;
 
     //Schwarze Figuren
     turm_black.img = new Image();
@@ -258,15 +286,16 @@ function loadImages() {
     bauer_weiss.img.src = bauer_weiss.src;
 }
 
-function initialDraw() {
-
-}
-
-function draw() {
+function draw() {  //Zeichnet die Bilder auf das Canvas
     ctx.drawImage(backgroundImage, 0, 0, 850, 850);
-    if(playerSelected == true)
+    if(playerSelected == true) //markiert den aktuell ausgewählten Spieler grün
     {
         ctx.drawImage(selected.img, x, y,  figur.width, figur.height);
+    }
+    else //markiert den zuletzt getätigten Zug gelb
+    {
+        ctx.drawImage(selected2.img, x2, y2,  figur.width, figur.height);
+        ctx.drawImage(selected2.img, x1, y1,  figur.width, figur.height);
     }
 
     for (var i = 0; i < 8; i++) 
@@ -285,6 +314,18 @@ function draw() {
             }
         }
     requestAnimationFrame(draw);
+}
+
+function undoMove() //macht den letzten Zug rückgängig
+{
+    currentFigur = figures[lastMove[3]][lastMove[2]];
+    if(currentFigur != '0')
+    {
+        figures[lastMove[3]][lastMove[2]] = '0';
+        figures[lastMove[1]][lastMove[0]] = currentFigur;
+        console.log("Zug " + zugCounter + " zurück")
+        zugCounter--;
+    }
 }
 
 function getImageSrc(c) { //gibt das passende Bild zu der Figur zurück
@@ -415,16 +456,7 @@ function myMove() {  //Bewertungsfunktion Animation
   }
 }
 
-function undoMove() //macht den letzten Zug rückgängig
-{
-    currentFigur = figures[lastMove[3]][lastMove[2]];
-    if(currentFigur != '0')
-    {
-        figures[lastMove[3]][lastMove[2]] = '0';
-        figures[lastMove[1]][lastMove[0]] = currentFigur;
-        console.log("Zug zurück")
-    }
-}
+
 
 function Zugfolge() //Zeigt die vollständige Zughistorie an
 {
