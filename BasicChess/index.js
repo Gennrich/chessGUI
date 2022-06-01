@@ -1,6 +1,7 @@
 let canvas;
 let ctx;
-let backgroundImage = new Image(); 
+let backgroundImage = new Image();
+let backgroundImageRotated = new Image(); 
 var playerSelected = false;
 var figures = [ //Figuren von oben links nach unten rechts (Groß: Schwarz, Klein: weiß)
     ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
@@ -39,6 +40,7 @@ var x1, x2;
 var y1, y2;
 
 var boolNewGame = true; //neue Partie
+var fieldRotated = false; //Brett gedreht
 
 let figur = {
     width: 100,
@@ -204,6 +206,12 @@ function mouseListener() {
         }
         else
         {
+            if(boolNewGame)
+            {
+                boolNewGame = false;
+                Jetzt = new Date();  //neues Datumsobjekt mit aktuellem Zeitpunkt
+                Start = (Jetzt.getTime()) + 300000; //getTime(): absolute Zahl in Millisekunden + 5 Minuten
+            }
             console.log("TargetX: " + targetNumberX + " TargetY: " + targetNumberY);
             playerSelected = false;
 
@@ -238,10 +246,9 @@ function startGame() {
     //setInterval(update, 1000 / 25); //update wird 25 Mal in der Sekunde aufgerufen
 }
 
-
-
 function loadImages() {
     backgroundImage.src = 'img/chessFieldWithRand.png';
+    backgroundImageRotated.src = 'img/chessFieldRotated.png';
 
     selected.img = new Image();
     selected.img.src = selected.src;
@@ -289,7 +296,14 @@ function loadImages() {
 }
 
 function draw() {  //Zeichnet die Bilder auf das Canvas
-    ctx.drawImage(backgroundImage, 0, 0, 850, 850);
+    if(fieldRotated)
+    {
+        ctx.drawImage(backgroundImageRotated, 0, 0, 850, 850);
+    }
+    else
+    {
+        ctx.drawImage(backgroundImage, 0, 0, 850, 850);
+    }
     if(playerSelected == true) //markiert den aktuell ausgewählten Spieler grün
     {
         ctx.drawImage(selected.img, x, y,  figur.width, figur.height);
@@ -318,16 +332,6 @@ function draw() {  //Zeichnet die Bilder auf das Canvas
             
         }
     }
-
-    if(boolNewGame && zugCounter > 0)
-    {
-        Jetzt = new Date();  //neues Datumsobjekt mit aktuellem Zeitpunkt
-        Start = (Jetzt.getTime()) + 300000; //getTime(): absolute Zahl in Millisekunden + 5 Minuten
-        window.setTimeout('ZeitAnzeigenCom()', 0);
-        window.setTimeout('ZeitAnzeigenPl()', 0)
-        boolNewGame = false;
-    }
-
     requestAnimationFrame(draw);
 }
 
@@ -346,22 +350,42 @@ function undoMove() //macht den letzten Zug rückgängig
 function newGame() //setzt alle Werte zurück und startet ein neues Spiel
 {
     playerSelected = false;
-    figures = [
-    ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
-    ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
-    ['0', '0', '0', '0', '0', '0', '0', '0'],
-    ['0', '0', '0', '0', '0', '0', '0', '0'],
-    ['0', '0', '0', '0', '0', '0', '0', '0'],
-    ['0', '0', '0', '0', '0', '0', '0', '0'],
-    ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
-    ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r']];
+    if(fieldRotated)
+    {
+        figures = [
+        ['r', 'n', 'b', 'k', 'q', 'b', 'n', 'r'],
+        ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+        ['R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R']];
+    }
+    else
+    {
+        figures = [
+        ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
+        ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+        ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r']];
+    }
     Jetzt = new Date();
     boolNewGame = true;
     Start = (Jetzt.getTime()) + 300000;
     playerTurn = true;
     lastMove = ['0', '0', '0', '0']; //X & Y Pos Startfeld, X & Y Pos Zielfeld
     zugCounter = 0;
-    
+}
+
+function turnField() //dreht das Spielfeld
+{
+    fieldRotated = !fieldRotated;
+    newGame();
 }
 
 function getImageSrc(c) { //gibt das passende Bild zu der Figur zurück
@@ -399,12 +423,6 @@ function getCoordinates(i) {
     return coord;
 }
 
-function update() {
-
-
-}
-
-
 function ZeitAnzeigenCom() //Zeitanzeige Computer
 { 
     var absSekunden = Math.round(ZeitBerechnenCom()); //Bruchwert wird auf Ganzzahl gerundet
@@ -436,6 +454,10 @@ function ZeitBerechnenCom() // Erzeugt beim Aufruf ein neues Datumsobjekt mit ak
         {
             zeitanzeigeCom.style.backgroundColor = "red";
         }
+        if(boolNewGame)
+        {
+            return(300);
+        }
         return((Start - Immernoch.getTime())/1000); //Gibt Differenz zu Startzeitpunkt zurück
 
     }
@@ -455,6 +477,10 @@ function ZeitBerechnenPl()
         if(((Start - Immernoch.getTime())/1000) < 280)
         {
             zeitanzeigePl.style.backgroundColor = "red";
+        }
+        if(boolNewGame)
+        {
+            return(300);
         }
         return((Start - Immernoch.getTime())/1000); //Gibt Differenz zu Startzeitpunkt zurück
     }

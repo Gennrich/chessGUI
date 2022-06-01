@@ -10,7 +10,8 @@
     <script src="index.js"></script>
 
 </head>
-<body onload="startGame(), myMove()">
+<body onload="startGame(), myMove(), window.setTimeout('ZeitAnzeigenCom()', 0), window.setTimeout('ZeitAnzeigenPl()', 0)">
+
 
     <table>
         <thead>
@@ -45,6 +46,8 @@
         <tr>
             <td>
                 <button onclick="newGame()">Neue Partie</button>
+                <p></p>
+                <button onclick="turnField()">Brett drehen</button>
                 <p></p>
                 <button onclick="undoMove()">Zug zurück</button>
             </td>
