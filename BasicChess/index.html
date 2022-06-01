@@ -10,21 +10,7 @@
     <script src="index.js"></script>
 
 </head>
-<body onload="startGame(), window.setTimeout('ZeitAnzeigenCom()', 1000), window.setTimeout('ZeitAnzeigenPl()', 1000), myMove()">
-    
-    <!-- Aufruf um eine Sekunde verzögert. -->
-    
-
-    
-    <div style="float:left">
-         
-    </div>
-    
-    <div style="float:right">
-        
-        
-
-    </div>
+<body onload="startGame(), myMove()">
 
     <table>
         <thead>
@@ -33,8 +19,10 @@
             </tr>
         </thead>
         
-        
         <tr>
+            <td>
+                <fon>Menü</fon>
+            </td>
             <td>
                 <form name="AnzeigeCom" >
                     <div style="float:left"><fon>Schwach Matt &ensp;</fon></div>
@@ -53,13 +41,16 @@
                 <fon>Zughistorie</fon>
             </td>
         </tr>
+
         <tr>
+            <td>
+                <button onclick="newGame()">Neue Partie</button>
+                <p></p>
+                <button onclick="undoMove()">Zug zurück</button>
+            </td>
             <td>
                 <!-- Größe des Canvas muss in html festgelegt werden -->
                 <canvas id="canvas" width="850" height="850"></canvas>
-                <p></p>
-                <!-- Zug zurück -->
-                <button onclick="undoMove()">Zug zurück</button>
             </td>
             <td>
                 <!-- Bewertungsanzeige -->
@@ -73,6 +64,7 @@
                 <p>D2 --> D4</p>
             </td>
         </tr>
+
     </table>
     
     

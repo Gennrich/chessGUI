@@ -1,7 +1,7 @@
 let canvas;
 let ctx;
 let backgroundImage = new Image(); 
-var playerSelected = new Boolean(false);
+var playerSelected = false;
 var figures = [ //Figuren von oben links nach unten rechts (Groß: Schwarz, Klein: weiß)
     ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
     ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
@@ -29,7 +29,7 @@ var Start = (Jetzt.getTime()) + 300000; //getTime(): absolute Zahl in Millisekun
 var zeitanzeigeCom; //Computer
 var zeitanzeigePl; //Player
 
-var playerTurn = new Boolean(true); //Spieler ist zu Beginn am Zug
+var playerTurn = true; //Spieler ist zu Beginn am Zug
 
 //Zug zurück
 var lastMove = ['0', '0', '0', '0']; //X & Y Pos Startfeld, X & Y Pos Zielfeld
@@ -37,6 +37,8 @@ var zugCounter = 0;
 //Variablen für farbige Markierung des letzten Zuges
 var x1, x2;
 var y1, y2;
+
+var boolNewGame = true; //neue Partie
 
 let figur = {
     width: 100,
@@ -294,25 +296,38 @@ function draw() {  //Zeichnet die Bilder auf das Canvas
     }
     else //markiert den zuletzt getätigten Zug gelb
     {
-        ctx.drawImage(selected2.img, x2, y2,  figur.width, figur.height);
-        ctx.drawImage(selected2.img, x1, y1,  figur.width, figur.height);
+        if(zugCounter > 0)
+        {
+            ctx.drawImage(selected2.img, x2, y2,  figur.width, figur.height);
+            ctx.drawImage(selected2.img, x1, y1,  figur.width, figur.height);
+        } 
     }
 
     for (var i = 0; i < 8; i++) 
+    {
+        for (var j = 0; j < 8; j++) 
         {
-            for (var j = 0; j < 8; j++) 
+            currentFigurDraw = (figures[j][i]);
+            if(getImageSrc(currentFigurDraw) == 'empty') // leeres Feld
             {
-                currentFigurDraw = (figures[j][i]);
-                if(getImageSrc(currentFigurDraw) == 'empty') // leeres Feld
-                {
-                }
-                else
-                {
-                    ctx.drawImage(getImageSrc(currentFigurDraw), getCoordinates(i), getCoordinates(j),  figur.width, figur.height);
-                }
-                
             }
+            else
+            {
+                ctx.drawImage(getImageSrc(currentFigurDraw), getCoordinates(i), getCoordinates(j),  figur.width, figur.height);
+            }
+            
         }
+    }
+
+    if(boolNewGame && zugCounter > 0)
+    {
+        Jetzt = new Date();  //neues Datumsobjekt mit aktuellem Zeitpunkt
+        Start = (Jetzt.getTime()) + 300000; //getTime(): absolute Zahl in Millisekunden + 5 Minuten
+        window.setTimeout('ZeitAnzeigenCom()', 0);
+        window.setTimeout('ZeitAnzeigenPl()', 0)
+        boolNewGame = false;
+    }
+
     requestAnimationFrame(draw);
 }
 
@@ -326,6 +341,27 @@ function undoMove() //macht den letzten Zug rückgängig
         console.log("Zug " + zugCounter + " zurück")
         zugCounter--;
     }
+}
+
+function newGame() //setzt alle Werte zurück und startet ein neues Spiel
+{
+    playerSelected = false;
+    figures = [
+    ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
+    ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+    ['0', '0', '0', '0', '0', '0', '0', '0'],
+    ['0', '0', '0', '0', '0', '0', '0', '0'],
+    ['0', '0', '0', '0', '0', '0', '0', '0'],
+    ['0', '0', '0', '0', '0', '0', '0', '0'],
+    ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+    ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r']];
+    Jetzt = new Date();
+    boolNewGame = true;
+    Start = (Jetzt.getTime()) + 300000;
+    playerTurn = true;
+    lastMove = ['0', '0', '0', '0']; //X & Y Pos Startfeld, X & Y Pos Zielfeld
+    zugCounter = 0;
+    
 }
 
 function getImageSrc(c) { //gibt das passende Bild zu der Figur zurück
@@ -377,8 +413,7 @@ function ZeitAnzeigenCom() //Zeitanzeige Computer
     var anzSekunden ="" + ((relSekunden > 9) ? relSekunden : "0" + relSekunden);
     var anzMinuten ="" + ((absMinuten > 9) ? absMinuten : "0" + absMinuten);
     window.document.AnzeigeCom.Zeit.value = anzMinuten + ":" + anzSekunden; //Anzeige wird beschrieben
-    
-    window.setTimeout('ZeitAnzeigenCom()',1000); //Zeitanzeige wird jede Sekunde aufgerufen
+    window.setTimeout('ZeitAnzeigenCom()',1000); //Zeitanzeige wird rekursiv jede Sekunde aufgerufen
 }
 
 function ZeitAnzeigenPl() //Zeitanzeige Spieler
@@ -389,12 +424,10 @@ function ZeitAnzeigenPl() //Zeitanzeige Spieler
     var anzSekunden ="" + ((relSekunden > 9) ? relSekunden : "0" + relSekunden);
     var anzMinuten ="" + ((absMinuten > 9) ? absMinuten : "0" + absMinuten);
     window.document.AnzeigePl.Zeit.value = anzMinuten + ":" + anzSekunden; //Anzeige wird beschrieben
-    
-    window.setTimeout('ZeitAnzeigenPl()',1000); //Zeitanzeige wird jede Sekunde aufgerufen
+    window.setTimeout('ZeitAnzeigenPl()',1000); //Zeitanzeige wird rekursiv jede Sekunde aufgerufen
 }
    
-// Erzeugt beim Aufruf ein neues Datumsobjekt mit aktueller Zeit
-function ZeitBerechnenCom()
+function ZeitBerechnenCom() // Erzeugt beim Aufruf ein neues Datumsobjekt mit aktueller Zeit
 { 
     var Immernoch = new Date(); 
     if(((Start - Immernoch.getTime())/1000) > 0)

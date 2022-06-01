@@ -27,3 +27,7 @@ fon {
   #Zughistorie {
       float: left;
   }
+
+  td {
+      vertical-align: top;
+  }
