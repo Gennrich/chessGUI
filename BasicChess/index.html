@@ -10,7 +10,17 @@
     <script src="index.js"></script>
 
 </head>
-<body onload="startGame()">
+<body onload="startGame(), window.setTimeout('ZeitAnzeigen()', 1000)">
+    
+    <!-- Aufruf um eine Sekunde verzögert. -->
+    <form name="Anzeige" >
+        <p>
+            <div style="float:left"><fon>Schwach Matt &ensp;</fon></div>
+            <!-- Eingabefeld wird als Ausgabe genutzt -->
+            <input size=7 name="Zeit" id="Anzeigefeld"> 
+        </p>
+        
+    </form>
     <!-- Größe des Canvas muss in html festgelegt werden -->
     <canvas id="canvas" width="850" height="850"></canvas>
     

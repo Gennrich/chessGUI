@@ -23,6 +23,10 @@ var targetNumberY = 0; //Zielfeld
 var currentFigur = '0'; //aktuelle Figur Array
 var currentFigurDraw = '0'; //aktuelle Figur Zeichnung
 
+Jetzt = new Date();  //neues Datumsobjekt mit aktuellem Zeitpunkt
+var Start = (Jetzt.getTime()) + 300000; //getTime(): absolute Zahl in Millisekunden + 5 Minuten
+var zeitanzeige;
+
 
 let figur = {
     width: 100,
@@ -183,6 +187,7 @@ function startGame() {
     document.getElementById("canvas").addEventListener("click", mouseListener); //Mouse Listener
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
+    zeitanzeige = document.getElementById('Anzeigefeld');
     
     console.log("Start Game erfolgreich");
     loadImages();
@@ -305,7 +310,45 @@ function getCoordinates(i) {
 }
 
 function update() {
+
+
+}
+
+
+function ZeitAnzeigen() 
+{ 
+    var absSekunden = Math.round(ZeitBerechnen()); //Bruchwert wird auf Ganzzahl gerundet
+    var relSekunden = absSekunden % 60;
+    var absMinuten = Math.round((absSekunden-30)/60);
+    var anzSekunden ="" + ((relSekunden > 9) ? relSekunden : "0" + relSekunden);
+    var anzMinuten ="" + ((absMinuten > 9) ? absMinuten : "0" + absMinuten);
+    window.document.Anzeige.Zeit.value = anzMinuten + ":" + anzSekunden; //Anzeige wird beschrieben
     
+    window.setTimeout('ZeitAnzeigen()',1000); //Zeitanzeige wird jede Sekunde aufgerufen
+}
+   
+// Erzeugt beim Aufruf ein neues Datumsobjekt mit aktueller Zeit
+function ZeitBerechnen()
+{ 
+    var Immernoch = new Date(); 
+    if(((Start - Immernoch.getTime())/1000) > 0)
+    {
+        if(((Start - Immernoch.getTime())/1000) < 280)
+        {
+            zeitanzeige.style.backgroundColor = "red";
+        }
+        return((Start - Immernoch.getTime())/1000); //Gibt Differenz zu Startzeitpunkt zurück
 
+    }
+    else
+    {
+        timeOver();
+        return(0);
+    }
+    
+}
 
+function timeOver()
+{
+    console.log("Zeit vorbei");
 }
