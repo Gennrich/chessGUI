@@ -467,7 +467,7 @@ function ZeitBerechnenCom() // Erzeugt beim Aufruf ein neues Datumsobjekt mit ak
         }
         if(((Start - Immernoch.getTime())/1000) < 280)
         {
-            zeitanzeigeCom.style.backgroundColor = "red";
+            zeitanzeigeCom.style.color = "#B40404"; //Zeit wird rot
         }
         return((Start - Immernoch.getTime())/1000); //Gibt Differenz zu Startzeitpunkt zurück
 
@@ -489,9 +489,9 @@ function ZeitBerechnenPl()
         {
             return(300);
         }
-        if(((Start - Immernoch.getTime())/1000) < 280)
+        if(((Start - Immernoch.getTime())/1000) < 290)
         {
-            zeitanzeigePl.style.backgroundColor = "red";
+            zeitanzeigePl.style.color = "#B40404"; //Zeit wird rot
         }
         return((Start - Immernoch.getTime())/1000); //Gibt Differenz zu Startzeitpunkt zurück
     }

@@ -14,35 +14,57 @@
 <body onload="startGame(), myMove(), window.setTimeout('ZeitAnzeigenCom()', 0), window.setTimeout('ZeitAnzeigenPl()', 0)">
 
     <div id="header">
-        <h2>Schwach Matt</h2>
     </div>
 
     <table>
         <tr>
-            <td>
+            <td width="3%">
+
+            </td>
+            <td width="10%">
                 <p>Menü</p>
             </td>
-            <td>
-                <form name="AnzeigeCom" >
-                    <div style="float:left"><p>Schwach Matt &ensp;</p></div>
-                    <input size=7 name="Zeit" id="AnzeigefeldCom"> 
-                </form>
-                <p></p>
-                <form name="AnzeigePl" >
-                    <div style="float:left"><p>Player &ensp;</p></div>
-                    <input size=7 name="Zeit" id="AnzeigefeldPl"> 
-                </form>
+            <td width="3%">
+
             </td>
-            <td width="200px">
+            <td width="1%">
+                <table style="background-color: #e50043;">
+                    <tr>
+                        <td>
+                            <form name="AnzeigeCom"><input size=7 name="Zeit" id="AnzeigefeldCom"></form>
+                        </td>
+                        <td width="25%" style="text-align: left;">
+                            <p>Schwach Matt</p>
+                        </td>
+                        <td width="20%">
+                            <p>0 : 0</p>
+                        </td>
+                        <td width="25%" style="text-align: right;">
+                            <p>Player</p>
+                        </td>
+                        <td>
+                            <form name="AnzeigePl"><input size=7 name="Zeit" id="AnzeigefeldPl"></form>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            <td width="3%">
                 <p></p>
             </td>
-            <td>
+            <td width="14%">
                 <p>Zughistorie</p>
+            </td>
+            <td width="9%">
+
             </td>
         </tr>
 
         <tr>
             <td>
+
+            </td>
+            <td style="vertical-align: top;">
+                <p></p>
                 <button onclick="newGame()">Neue Partie</button>
                 <p></p>
                 <button onclick="turnField()">Brett drehen</button>
@@ -50,8 +72,11 @@
                 <button onclick="undoMove()">Zug zurück</button>
             </td>
             <td>
+                
+            </td>
+            <td>
                 <!-- Größe des Canvas muss in html festgelegt werden -->
-                <canvas id="canvas" width="850" height="850"></canvas>
+                <canvas id="canvas" width="850px" height="850px"></canvas>
             </td>
             <td>
                 <!-- Bewertungsanzeige -->
@@ -61,6 +86,9 @@
             </td>
             <td>
                 <textarea readonly name="textarea" id="zug" cols="40"></textarea>
+            </td>
+            <td>
+
             </td>
         </tr>
     </table>

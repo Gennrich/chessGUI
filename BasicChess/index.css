@@ -1,6 +1,8 @@
 
 p {
     font-family: Verdana;
+    font-size: 18px;
+    color: white;
 }
 
 h2 {
@@ -14,6 +16,8 @@ h2 {
     height: 850px;
     position: relative;
     background: black;
+    border: 1px solid;
+    border-color: black;
   }
   
   #myAnimation {
@@ -21,7 +25,7 @@ h2 {
     height: 400px;
     position: absolute;
     background: white;
-    border: 1px;
+    border: 1px solid;
     border-color: black;
   }
 
@@ -29,9 +33,14 @@ h2 {
       float: left;
   }
 
-  td {
-      vertical-align: top;
+  td { 
+      align-items: center;
+      text-align: center;
+        
+    /* border: 1px solid;
+    border-color: black; */
   }
+
 
   #header {
       background-color: white;
@@ -45,12 +54,17 @@ h2 {
 
   /* damit kein weißer Rand um die Fußleiste entsteht */
   body { 
-      padding: 0;
-      margin: 0; 
+    padding: 0;
+    margin: 0;
   }
 
   table {
-    background-color: white;
+    background-color: #62717c;  
+    width: 100%;
+  }
+
+  input {
+    background-color: #afafaf;
   }
 
   textarea {
@@ -58,4 +72,5 @@ h2 {
       height: 850px;
       font-size: 20px;
       resize: none;
+      background-color: #afafaf;
   }
