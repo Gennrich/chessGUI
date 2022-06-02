@@ -512,17 +512,11 @@ function timeOver()
 var id = null;
 
 function myMove() {  //Bewertungsfunktion Animation
-  var elem = document.getElementById("myAnimation");
-  var pos = 800;
+  var elem = document.getElementById("blackBar");
   clearInterval(id);
-  id = setInterval(frame, 10);
+  id = setInterval(frame, 1000);
   function frame() {
-    if (pos == 0) {
-      clearInterval(id);
-    } else {
-      pos--;
-      elem.style.top = pos + 'px';
-    }
+      elem.style.height = "" + (Math.floor(Math.random() * 500)) + "px";  //Code to change Element Style
   }
 }
 

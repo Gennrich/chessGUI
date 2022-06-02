@@ -19,7 +19,7 @@
     <table>
         <tr>
             <td style="vertical-align: top; background-color: #afafaf;" width="10%" rowspan="2">
-                <p>Menü</p> 
+                <h1>Menü</h1> 
                 <button onclick="newGame()">Neue Partie</button>
                 <button onclick="turnField()">Brett drehen</button>
                 <button onclick="undoMove()">Zug zurück</button>
@@ -36,13 +36,13 @@
                             <form name="AnzeigeCom"><input size=7 name="Zeit" id="AnzeigefeldCom"></form>
                         </td>
                         <td width="25%" style="text-align: left;">
-                            <p id="">Schwach Matt</p>
+                            <h1 id="">Schwach Matt</h1>
                         </td>
                         <td width="20%">
                             <p>0 : 0</p>
                         </td>
                         <td width="25%" style="text-align: right;">
-                            <p>Player</p>
+                            <h1>Player</h1>
                         </td>
                         <td>
                             <form name="AnzeigePl"><input size=7 name="Zeit" id="AnzeigefeldPl"></form>
@@ -54,7 +54,7 @@
                 <p></p>
             </td>
             <td width="14%">
-                <p>Zughistorie</p>
+                <h1>Zughistorie</h1>
             </td>
             <td width="9%">
 
@@ -72,8 +72,8 @@
             </td>
             <td>
                 <!-- Bewertungsanzeige -->
-                <div id ="Bewertungsanzeige">
-                    <div id ="myAnimation"></div>
+                <div id ="whiteBar">
+                    <div id ="blackBar"></div>
                 </div>
             </td>
             <td>
@@ -86,8 +86,15 @@
     </table>
 
     <div id="footer">
-        <img src="img/th_logo2.svg.png" height=100px>
-        
+        <div id="content">
+            <img src="img/th_logo2.svg.png" height=100px>
+            <h1>Schwach Matt</h1>
+            <p>Kai Titgens</p>
+            <p>Paul Roloff</p>
+            <p>Niklas Thiel</p>
+            <p>Henry Unruh</p>
+            <p>Marcel Kübler</p>
+        </div>
     </div>
 
 </body>

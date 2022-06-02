@@ -1,7 +1,13 @@
 
-p {
+h1 {
     font-family: Verdana;
     font-size: 18px;
+    color: white;
+}
+
+p {
+    font-family: Verdana;
+    font-size: 13px;
     color: white;
 }
 
@@ -24,22 +30,22 @@ button {
     font-size: 15px;
 }
 
-#Bewertungsanzeige {
+#whiteBar {
     width: 30px;
     height: 850px;
     position: relative;
-    background: black;
-    border: 1px solid;
+    background: white;
     border-color: black;
+    border-radius: 6px;
   }
   
-  #myAnimation {
+  #blackBar {
     width: 30px;
-    height: 400px;
+    height: 425px;
     position: absolute;
-    background: white;
-    border: 1px solid;
+    background: black;
     border-color: black;
+    border-radius: 6px;
   }
 
   #Zughistorie {
@@ -61,7 +67,11 @@ button {
 
   #footer {
         background-color: #455059;
-        height: 200px;
+        height: 300px;
+  }
+
+  #content {
+    margin-left: 2%;
   }
 
 
