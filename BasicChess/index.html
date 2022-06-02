@@ -18,23 +18,25 @@
 
     <table>
         <tr>
-            <td width="3%">
-
-            </td>
-            <td width="10%">
-                <p>Menü</p>
+            <td style="vertical-align: top; background-color: #afafaf;" width="10%" rowspan="2">
+                <p>Menü</p> 
+                <button onclick="newGame()">Neue Partie</button>
+                <button onclick="turnField()">Brett drehen</button>
+                <button onclick="undoMove()">Zug zurück</button>
+                <button onclick="">Einstellungen</button>
+                <button onclick="">Hilfe</button>
             </td>
             <td width="3%">
 
             </td>
             <td width="1%">
-                <table style="background-color: #e50043;">
+                <table style="background-color: #e50043; border-radius: 5px;">
                     <tr>
                         <td>
                             <form name="AnzeigeCom"><input size=7 name="Zeit" id="AnzeigefeldCom"></form>
                         </td>
                         <td width="25%" style="text-align: left;">
-                            <p>Schwach Matt</p>
+                            <p id="">Schwach Matt</p>
                         </td>
                         <td width="20%">
                             <p>0 : 0</p>
@@ -60,17 +62,7 @@
         </tr>
 
         <tr>
-            <td>
 
-            </td>
-            <td style="vertical-align: top;">
-                <p></p>
-                <button onclick="newGame()">Neue Partie</button>
-                <p></p>
-                <button onclick="turnField()">Brett drehen</button>
-                <p></p>
-                <button onclick="undoMove()">Zug zurück</button>
-            </td>
             <td>
                 
             </td>
