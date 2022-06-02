@@ -1,22 +1,23 @@
-canvas {
-    background-color: brown;
-}
 
-fon {
+p {
     font-family: Verdana;
 }
 
+h2 {
+    font-family: Verdana;
+    text-align: center;
+    color: #e50043;
+}
+
 #Bewertungsanzeige {
-    width: 50px;
+    width: 30px;
     height: 850px;
     position: relative;
     background: black;
-    border: 1px;
-    border-color: black;
   }
   
   #myAnimation {
-    width: 50px;
+    width: 30px;
     height: 400px;
     position: absolute;
     background: white;
@@ -32,8 +33,29 @@ fon {
       vertical-align: top;
   }
 
+  #header {
+      background-color: white;
+  }
+
+  #footer {
+        background-color: #455059;
+        height: 200px;
+  }
+
+
+  /* damit kein weißer Rand um die Fußleiste entsteht */
+  body { 
+      padding: 0;
+      margin: 0; 
+  }
+
+  table {
+    background-color: white;
+  }
+
   textarea {
       width: 200px;
       height: 850px;
+      font-size: 20px;
       resize: none;
   }

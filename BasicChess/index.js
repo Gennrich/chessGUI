@@ -390,6 +390,7 @@ function newGame() //setzt alle Werte zurück und startet ein neues Spiel
     playerTurn = true;
     lastMove = ['0', '0', '0', '0']; //X & Y Pos Startfeld, X & Y Pos Zielfeld
     zugCounter = 0;
+    document.getElementById("zug").innerHTML = "";
 }
 
 function turnField() //dreht das Spielfeld
@@ -504,7 +505,7 @@ function ZeitBerechnenPl()
 
 function timeOver()
 {
-    console.log("Zeit vorbei");
+    //console.log("Zeit vorbei");
 }
 
 
@@ -579,8 +580,11 @@ function zugfolge() //Zeigt die vollständige Zughistorie an
     }
     z6 = 8 - (targetNumberY); //y Koordinate Zielfeld
 
+    //Es fehlt die Kennzeichung des Schachgebots '+', Matt '#', die kleine Rochade '0-0'
+    // die große Rochade '0-0-0'. das Schlagen en passant 'e.p.' und das Remisangebot '='
+
     console.log(z1 + z2 + z3 + z4 + z5 + z6);
     var ausgabe = "" + (document.querySelector("#zug").value) + z1 + z2 + z3 + z4 + z5 + z6 + "\n";
     document.getElementById("zug").innerHTML = ausgabe;
-    
+    document.getElementById("zug").scrollTop = document.getElementById("zug").scrollHeight; //Scrollt Textfeld automatisch
 }
