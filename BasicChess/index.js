@@ -41,6 +41,7 @@ var y1, y2;
 
 var boolNewGame = true; //neue Partie
 var fieldRotated = false; //Brett gedreht
+var figurBeaten = false;
 
 let figur = {
     width: 100,
@@ -206,6 +207,14 @@ function mouseListener() {
         }
         else
         {
+            if((figures[targetNumberY][targetNumberX]) != '0') // Figur geschlagen
+            {
+                figurBeaten = true;
+            }
+            else
+            {
+                figurBeaten = false;
+            }
             if(boolNewGame)
             {
                 boolNewGame = false;
@@ -222,6 +231,7 @@ function mouseListener() {
             lastMove[2] = targetNumberX;
             lastMove[3] = targetNumberY;
             zugCounter++;
+            zugfolge();
             //Speichert Koordinaten für den zuletzt getätigten Zug
             x1 = getCoordinates(lastMove[0]);
             y1 = getCoordinates(lastMove[1]);
@@ -450,13 +460,13 @@ function ZeitBerechnenCom() // Erzeugt beim Aufruf ein neues Datumsobjekt mit ak
     var Immernoch = new Date(); 
     if(((Start - Immernoch.getTime())/1000) > 0)
     {
-        if(((Start - Immernoch.getTime())/1000) < 280)
-        {
-            zeitanzeigeCom.style.backgroundColor = "red";
-        }
         if(boolNewGame)
         {
             return(300);
+        }
+        if(((Start - Immernoch.getTime())/1000) < 280)
+        {
+            zeitanzeigeCom.style.backgroundColor = "red";
         }
         return((Start - Immernoch.getTime())/1000); //Gibt Differenz zu Startzeitpunkt zurück
 
@@ -474,13 +484,13 @@ function ZeitBerechnenPl()
     var Immernoch = new Date(); 
     if(((Start - Immernoch.getTime())/1000) > 0)
     {
-        if(((Start - Immernoch.getTime())/1000) < 280)
-        {
-            zeitanzeigePl.style.backgroundColor = "red";
-        }
         if(boolNewGame)
         {
             return(300);
+        }
+        if(((Start - Immernoch.getTime())/1000) < 280)
+        {
+            zeitanzeigePl.style.backgroundColor = "red";
         }
         return((Start - Immernoch.getTime())/1000); //Gibt Differenz zu Startzeitpunkt zurück
     }
@@ -517,7 +527,60 @@ function myMove() {  //Bewertungsfunktion Animation
 
 
 
-function Zugfolge() //Zeigt die vollständige Zughistorie an
+function zugfolge() //Zeigt die vollständige Zughistorie an
 {
+    var z1, z2, z3, z4, z5, z6;
+    switch(currentFigur) //Figur
+    {
+        case 'R': z1 = 'T'; break;
+        case 'N': z1 = 'S'; break;
+        case 'B': z1 = 'L'; break;
+        case 'Q': z1 = 'D'; break;
+        case 'K': z1 = 'K'; break;
+        case 'P': z1 = ''; break; //Bauern werden weggelassen
+        case 'r': z1 = 'T'; break;
+        case 'n': z1 = 'S'; break;
+        case 'b': z1 = 'L'; break;
+        case 'q': z1 = 'D'; break;
+        case 'k': z1 = 'K'; break;
+        case 'p': z1 = ''; break; //Bauern werden weggelassen
+    }
+    switch(fieldNumberX) //x Koordinate Startfeld
+    {
+        case 0: z2 = 'a'; break;
+        case 1: z2 = 'b'; break;
+        case 2: z2 = 'c'; break;
+        case 3: z2 = 'd'; break;
+        case 4: z2 = 'e'; break;
+        case 5: z2 = 'f'; break;
+        case 6: z2 = 'g'; break;
+        case 7: z2 = 'h'; break;
+    }
+    z3 = 8 - (fieldNumberY); //y Koordinate Startfeld
 
+    if(!figurBeaten)
+    {
+        z4 = '-'; //keine Figur geschlagen
+    }
+    else
+    {
+        z4 = 'x'; //Figur geschalgen
+    }
+    switch(targetNumberX) //x Koordinate Zielfeld
+    {
+        case 0: z5 = 'a'; break;
+        case 1: z5 = 'b'; break;
+        case 2: z5 = 'c'; break;
+        case 3: z5 = 'd'; break;
+        case 4: z5 = 'e'; break;
+        case 5: z5 = 'f'; break;
+        case 6: z5 = 'g'; break;
+        case 7: z5 = 'h'; break;
+    }
+    z6 = 8 - (targetNumberY); //y Koordinate Zielfeld
+
+    console.log(z1 + z2 + z3 + z4 + z5 + z6);
+    var ausgabe = "" + (document.querySelector("#zug").value) + z1 + z2 + z3 + z4 + z5 + z6 + "\n";
+    document.getElementById("zug").innerHTML = ausgabe;
+    
 }

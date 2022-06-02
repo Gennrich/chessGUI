@@ -31,3 +31,9 @@ fon {
   td {
       vertical-align: top;
   }
+
+  textarea {
+      width: 200px;
+      height: 850px;
+      resize: none;
+  }
