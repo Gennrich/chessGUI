@@ -12,7 +12,6 @@ var figures = [ //Figuren von oben links nach unten rechts (Groß: Schwarz, Klei
     ['0', '0', '0', '0', '0', '0', '0', '0'],
     ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
     ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r']];
-
 var fieldX = 0; //Mouseclick Koordinaten
 var fieldY = 0; //Mouseclick Koordinaten
 var x; //Eckkoordinaten oben links des Feldes
@@ -45,6 +44,9 @@ var boolNewGame = true; //neue Partie
 var fieldRotated = false; //Brett gedreht
 var boolWhite = true; //Spielfarbe weiß
 var figurBeaten = false;
+
+var moves = []; //Arraylist mit allen Spielzügen
+var arrZugHistorie = [];
 
 let figur = {
     width: 100,
@@ -232,6 +234,13 @@ function mouseListener() {
             figures[targetNumberY][targetNumberX] = currentFigur;
             figures[fieldNumberY][fieldNumberX] = '0';
 
+            var move = new Object(); //Fügt den aktuellen Zug zu der Liste hinzu
+            move.startX = fieldNumberX;
+            move.startY = fieldNumberY;
+            move.targetX = targetNumberX;
+            move.targetY = targetNumberY;
+            moves.push(move);
+
             lastMove[2] = targetNumberX;
             lastMove[3] = targetNumberY;
             zugCounter++;
@@ -384,6 +393,8 @@ function undoMove() //macht den letzten Zug rückgängig
         figures[lastMove[1]][lastMove[0]] = currentFigur;
         console.log("Zug " + zugCounter + " zurück")
         zugCounter--;
+        playerTurn = !playerTurn;
+        document.getElementById("zug").innerHTML = ausgabe;
     }
 }
 
@@ -552,64 +563,76 @@ function myMove() {  //Bewertungsfunktion Animation
 }
 
 
-
+//Es fehlt die Kennzeichung des Schachgebots '+', Matt '#', die kleine Rochade '0-0'
+// die große Rochade '0-0-0'. das Schlagen en passant 'e.p.' und das Remisangebot '='
 function zugfolge() //Zeigt die vollständige Zughistorie an
 {
     var z1, z2, z3, z4, z5, z6;
-    switch(currentFigur) //Figur
+    for (var i = 0; i < zugCounter; i++) 
     {
-        case 'R': z1 = 'T'; break;
-        case 'N': z1 = 'S'; break;
-        case 'B': z1 = 'L'; break;
-        case 'Q': z1 = 'D'; break;
-        case 'K': z1 = 'K'; break;
-        case 'P': z1 = ''; break; //Bauern werden weggelassen
-        case 'r': z1 = 'T'; break;
-        case 'n': z1 = 'S'; break;
-        case 'b': z1 = 'L'; break;
-        case 'q': z1 = 'D'; break;
-        case 'k': z1 = 'K'; break;
-        case 'p': z1 = ''; break; //Bauern werden weggelassen
-    }
-    switch(fieldNumberX) //x Koordinate Startfeld
-    {
-        case 0: z2 = 'a'; break;
-        case 1: z2 = 'b'; break;
-        case 2: z2 = 'c'; break;
-        case 3: z2 = 'd'; break;
-        case 4: z2 = 'e'; break;
-        case 5: z2 = 'f'; break;
-        case 6: z2 = 'g'; break;
-        case 7: z2 = 'h'; break;
-    }
-    z3 = 8 - (fieldNumberY); //y Koordinate Startfeld
+        switch(currentFigur) //Figur
+        {
+            case 'R': z1 = 'T'; break;
+            case 'N': z1 = 'S'; break;
+            case 'B': z1 = 'L'; break;
+            case 'Q': z1 = 'D'; break;
+            case 'K': z1 = 'K'; break;
+            case 'P': z1 = ''; break; //Bauern werden weggelassen
+            case 'r': z1 = 'T'; break;
+            case 'n': z1 = 'S'; break;
+            case 'b': z1 = 'L'; break;
+            case 'q': z1 = 'D'; break;
+            case 'k': z1 = 'K'; break;
+            case 'p': z1 = ''; break; //Bauern werden weggelassen
+        }
 
-    if(!figurBeaten)
-    {
-        z4 = '-'; //keine Figur geschlagen
-    }
-    else
-    {
-        z4 = 'x'; //Figur geschalgen
-    }
-    switch(targetNumberX) //x Koordinate Zielfeld
-    {
-        case 0: z5 = 'a'; break;
-        case 1: z5 = 'b'; break;
-        case 2: z5 = 'c'; break;
-        case 3: z5 = 'd'; break;
-        case 4: z5 = 'e'; break;
-        case 5: z5 = 'f'; break;
-        case 6: z5 = 'g'; break;
-        case 7: z5 = 'h'; break;
-    }
-    z6 = 8 - (targetNumberY); //y Koordinate Zielfeld
+        switch(moves[zugCounter -1].startX) //x Koordinate Startfeld
+        {
+            case 0: z2 = 'a'; break;
+            case 1: z2 = 'b'; break;
+            case 2: z2 = 'c'; break;
+            case 3: z2 = 'd'; break;
+            case 4: z2 = 'e'; break;
+            case 5: z2 = 'f'; break;
+            case 6: z2 = 'g'; break;
+            case 7: z2 = 'h'; break;
+        }
+        z3 = 8 - (moves[zugCounter -1].startY); //y Koordinate Startfeld
 
-    //Es fehlt die Kennzeichung des Schachgebots '+', Matt '#', die kleine Rochade '0-0'
-    // die große Rochade '0-0-0'. das Schlagen en passant 'e.p.' und das Remisangebot '='
+        if(!figurBeaten)
+        {
+            z4 = '-'; //keine Figur geschlagen
+        }
+        else
+        {
+            z4 = 'x'; //Figur geschalgen
+        }
+        switch(moves[zugCounter -1].targetX) //x Koordinate Zielfeld
+        {
+            case 0: z5 = 'a'; break;
+            case 1: z5 = 'b'; break;
+            case 2: z5 = 'c'; break;
+            case 3: z5 = 'd'; break;
+            case 4: z5 = 'e'; break;
+            case 5: z5 = 'f'; break;
+            case 6: z5 = 'g'; break;
+            case 7: z5 = 'h'; break;
+        }
+        z6 = 8 - (moves[zugCounter -1].targetY); //y Koordinate Zielfeld
 
-    console.log(z1 + z2 + z3 + z4 + z5 + z6);
-    var ausgabe = "" + (document.querySelector("#zug").value) + z1 + z2 + z3 + z4 + z5 + z6 + "\n";
-    document.getElementById("zug").innerHTML = ausgabe;
-    document.getElementById("zug").scrollTop = document.getElementById("zug").scrollHeight; //Scrollt Textfeld automatisch
+        arrZugHistorie.push(z1 + z2 + z3 + z4 + z5 + z6);
+        
+    }
+    for (var i = 0; i < zugCounter; i++) 
+    {
+        var ausgabe = "" + arrZugHistorie[zugCounter -1] + "\n";
+        document.getElementById("zug").innerHTML = ausgabe;
+        document.getElementById("zug").scrollTop = document.getElementById("zug").scrollHeight; //Scrollt Textfeld automatisch
+    }
+    
+    //document.querySelector("#zug").value
+    
+    
+    
+    
 }
