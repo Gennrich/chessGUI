@@ -31,6 +31,8 @@ var zeitanzeigeCom; //Computer
 var zeitanzeigePl; //Player
 
 var playerTurn = true; //Spieler ist zu Beginn am Zug
+var titleCom;
+var titlePl;
 
 //Zug zurück
 var lastMove = ['0', '0', '0', '0']; //X & Y Pos Startfeld, X & Y Pos Zielfeld
@@ -41,6 +43,7 @@ var y1, y2;
 
 var boolNewGame = true; //neue Partie
 var fieldRotated = false; //Brett gedreht
+var boolWhite = true; //Spielfarbe weiß
 var figurBeaten = false;
 
 let figur = {
@@ -142,7 +145,7 @@ function mouseListener() {
     fieldX = window.event.offsetX;
     fieldY = window.event.offsetY;
 
-    if(playerSelected == false) {
+    if(playerSelected == false) {  //Spieler wird ausgewählt
         switch(true) {
             case (fieldX >= 725): x = 725; fieldNumberX = 7; break;
             case (fieldX >= 625): x = 625; fieldNumberX = 6; break;
@@ -167,7 +170,7 @@ function mouseListener() {
         }
         currentFigur = (figures[fieldNumberY][fieldNumberX]);
 
-        if(currentFigur != '0')
+        if(currentFigur != '0' && (isWhite() == boolWhite))
         {
             console.log("fieldX: " + window.event.offsetX + " fieldY: " + window.event.offsetY);
             console.log("NumberX: " + fieldNumberX + " NumberY: " + fieldNumberY);
@@ -177,7 +180,7 @@ function mouseListener() {
             playerSelected = true;
         }
     }
-    else 
+    else  //Zielfeld wird ausgewählt
     {
         switch(true) {
             case (fieldX >= 725): x = 725; targetNumberX = 7; break;
@@ -223,6 +226,7 @@ function mouseListener() {
             }
             console.log("TargetX: " + targetNumberX + " TargetY: " + targetNumberY);
             playerSelected = false;
+            playerTurn = !playerTurn;
 
             //Aktualisierung der Figurenposition im Array
             figures[targetNumberY][targetNumberX] = currentFigur;
@@ -242,12 +246,28 @@ function mouseListener() {
     }
 }
 
+function isWhite() //überprüft ob die Figur weiß ist
+{
+    switch(currentFigur)
+    {
+        case 'r': return true;
+        case 'n': return true;
+        case 'b': return true;
+        case 'q': return true;
+        case 'k': return true;
+        case 'p': return true;
+        default: return false;
+    }
+}
+
 function startGame() {
     document.getElementById("canvas").addEventListener("click", mouseListener); //Mouse Listener
     canvas = document.getElementById('canvas');
     ctx = canvas.getContext('2d');
     zeitanzeigeCom = document.getElementById('AnzeigefeldCom');
     zeitanzeigePl = document.getElementById('AnzeigefeldPl');
+    titleCom = document.getElementById('titleCom');
+    titlePl = document.getElementById('titlePl');
     
     console.log("Start Game erfolgreich");
     loadImages();
@@ -342,6 +362,16 @@ function draw() {  //Zeichnet die Bilder auf das Canvas
             
         }
     }
+    if(playerTurn)
+    {
+        titlePl.style.color = "#00ff84";
+        titleCom.style.color = "white";
+    }
+    else
+    {
+        titlePl.style.color = "white";
+        titleCom.style.color = "#00ff84";
+    }
     requestAnimationFrame(draw);
 }
 
@@ -396,6 +426,7 @@ function newGame() //setzt alle Werte zurück und startet ein neues Spiel
 function turnField() //dreht das Spielfeld
 {
     fieldRotated = !fieldRotated;
+    boolWhite = !boolWhite;
     newGame();
 }
 

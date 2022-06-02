@@ -94,12 +94,13 @@ button {
   }
 
   textarea {
-      width: 200px;
+      width: 250px;
       height: 850px;
       font-size: 20px;
       resize: none;
       background-color: #afafaf;
       border-radius: 5px;
+      text-align: center;
   }
 
   button:hover {
