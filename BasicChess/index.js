@@ -34,7 +34,6 @@ var titleCom;
 var titlePl;
 
 //Zug zurück
-var lastMove = ['0', '0', '0', '0']; //X & Y Pos Startfeld, X & Y Pos Zielfeld
 var zugCounter = 0;
 
 var boolNewGame = true; //neue Partie
@@ -174,8 +173,6 @@ function mouseListener() {
             console.log("fieldX: " + window.event.offsetX + " fieldY: " + window.event.offsetY);
             console.log("NumberX: " + fieldNumberX + " NumberY: " + fieldNumberY);
             console.log("Figur: " + currentFigur);
-            lastMove[0] = fieldNumberX;
-            lastMove[1] = fieldNumberY;
             playerSelected = true;
         }
     }
@@ -384,6 +381,7 @@ function undoMove() //macht den letzten Zug rückgängig
         zugCounter--;
         playerTurn = !playerTurn;
         
+        moves.pop();
         arrZugHistorie.pop(); //letztes Element wird aus Moves gelöscht
         zugfolgeAnzeigen(); //neue Ausgabe wird berechnet
     }
@@ -552,7 +550,7 @@ var id = null;
 function myMove() {  //Bewertungsfunktion Animation
   var elem = document.getElementById("blackBar");
   clearInterval(id);
-  id = setInterval(frame, 1000);
+  id = setInterval(frame, 2000);
   function frame() {
       elem.style.height = "" + (Math.floor(Math.random() * 500)) + "px";  //Code to change Element Style
   }
