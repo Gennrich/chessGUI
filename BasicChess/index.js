@@ -36,9 +36,6 @@ var titlePl;
 //Zug zurück
 var lastMove = ['0', '0', '0', '0']; //X & Y Pos Startfeld, X & Y Pos Zielfeld
 var zugCounter = 0;
-//Variablen für farbige Markierung des letzten Zuges
-var x1, x2;
-var y1, y2;
 
 var boolNewGame = true; //neue Partie
 var fieldRotated = false; //Brett gedreht
@@ -240,16 +237,8 @@ function mouseListener() {
             move.targetX = targetNumberX;
             move.targetY = targetNumberY;
             moves.push(move);
-
-            lastMove[2] = targetNumberX;
-            lastMove[3] = targetNumberY;
             zugCounter++;
             zugfolge();
-            //Speichert Koordinaten für den zuletzt getätigten Zug
-            x1 = getCoordinates(lastMove[0]);
-            y1 = getCoordinates(lastMove[1]);
-            x2 = getCoordinates(lastMove[2]);
-            y2 = getCoordinates(lastMove[3]);
         }
         
     }
@@ -351,8 +340,8 @@ function draw() {  //Zeichnet die Bilder auf das Canvas
     {
         if(zugCounter > 0)
         {
-            ctx.drawImage(selected2.img, x2, y2,  figur.width, figur.height);
-            ctx.drawImage(selected2.img, x1, y1,  figur.width, figur.height);
+            ctx.drawImage(selected2.img, getCoordinates(moves[zugCounter -1].targetX), getCoordinates(moves[zugCounter -1].targetY),  figur.width, figur.height);
+            ctx.drawImage(selected2.img, getCoordinates(moves[zugCounter -1].startX), getCoordinates(moves[zugCounter -1].startY),  figur.width, figur.height);
         } 
     }
 
@@ -386,15 +375,17 @@ function draw() {  //Zeichnet die Bilder auf das Canvas
 
 function undoMove() //macht den letzten Zug rückgängig
 {
-    currentFigur = figures[lastMove[3]][lastMove[2]];
+    currentFigur = figures[moves[zugCounter -1].targetY][moves[zugCounter -1].targetX];
     if(currentFigur != '0')
     {
-        figures[lastMove[3]][lastMove[2]] = '0';
-        figures[lastMove[1]][lastMove[0]] = currentFigur;
+        figures[moves[zugCounter -1].targetY][moves[zugCounter -1].targetX] = '0';
+        figures[moves[zugCounter -1].startY][moves[zugCounter -1].startX] = currentFigur;
         console.log("Zug " + zugCounter + " zurück")
         zugCounter--;
         playerTurn = !playerTurn;
-        document.getElementById("zug").innerHTML = ausgabe;
+        
+        arrZugHistorie.pop(); //letztes Element wird aus Moves gelöscht
+        zugfolgeAnzeigen(); //neue Ausgabe wird berechnet
     }
 }
 
@@ -429,7 +420,12 @@ function newGame() //setzt alle Werte zurück und startet ein neues Spiel
     boolNewGame = true;
     Start = (Jetzt.getTime()) + 300000;
     playerTurn = true;
-    lastMove = ['0', '0', '0', '0']; //X & Y Pos Startfeld, X & Y Pos Zielfeld
+    for(let i = moves.length; i > 0; i--)
+    {
+        moves.pop();
+        arrZugHistorie.pop();
+    }
+    
     zugCounter = 0;
     document.getElementById("zug").innerHTML = "";
 }
@@ -568,8 +564,6 @@ function myMove() {  //Bewertungsfunktion Animation
 function zugfolge() //Zeigt die vollständige Zughistorie an
 {
     var z1, z2, z3, z4, z5, z6;
-    for (var i = 0; i < zugCounter; i++) 
-    {
         switch(currentFigur) //Figur
         {
             case 'R': z1 = 'T'; break;
@@ -621,18 +615,17 @@ function zugfolge() //Zeigt die vollständige Zughistorie an
         z6 = 8 - (moves[zugCounter -1].targetY); //y Koordinate Zielfeld
 
         arrZugHistorie.push(z1 + z2 + z3 + z4 + z5 + z6);
-        
+        zugfolgeAnzeigen();
     }
-    for (var i = 0; i < zugCounter; i++) 
+
+function zugfolgeAnzeigen()
+{
+    document.getElementById("zug").innerHTML = "";
+    for (var i = 0; i < zugCounter; i++)
     {
-        var ausgabe = "" + arrZugHistorie[zugCounter -1] + "\n";
+        var ausgabe = document.querySelector("#zug").value + arrZugHistorie[i] + "\n";
         document.getElementById("zug").innerHTML = ausgabe;
+
         document.getElementById("zug").scrollTop = document.getElementById("zug").scrollHeight; //Scrollt Textfeld automatisch
-    }
-    
-    //document.querySelector("#zug").value
-    
-    
-    
-    
+    }   
 }
