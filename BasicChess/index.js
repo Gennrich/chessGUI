@@ -372,18 +372,21 @@ function draw() {  //Zeichnet die Bilder auf das Canvas
 
 function undoMove() //macht den letzten Zug rückgängig
 {
-    currentFigur = figures[moves[zugCounter -1].targetY][moves[zugCounter -1].targetX];
-    if(currentFigur != '0')
+    if(zugCounter > 0)
     {
-        figures[moves[zugCounter -1].targetY][moves[zugCounter -1].targetX] = '0';
-        figures[moves[zugCounter -1].startY][moves[zugCounter -1].startX] = currentFigur;
-        console.log("Zug " + zugCounter + " zurück")
-        zugCounter--;
-        playerTurn = !playerTurn;
-        
-        moves.pop();
-        arrZugHistorie.pop(); //letztes Element wird aus Moves gelöscht
-        zugfolgeAnzeigen(); //neue Ausgabe wird berechnet
+        currentFigur = figures[moves[zugCounter -1].targetY][moves[zugCounter -1].targetX];
+        if(currentFigur != '0')
+        {
+            figures[moves[zugCounter -1].targetY][moves[zugCounter -1].targetX] = '0';
+            figures[moves[zugCounter -1].startY][moves[zugCounter -1].startX] = currentFigur;
+            console.log("Zug " + zugCounter + " zurück")
+            zugCounter--;
+            playerTurn = !playerTurn;
+            
+            moves.pop();
+            arrZugHistorie.pop(); //letztes Element wird aus Moves gelöscht
+            zugfolgeAnzeigen(); //neue Ausgabe wird berechnet
+        }
     }
 }
 
@@ -549,10 +552,22 @@ var id = null;
 
 function myMove() {  //Bewertungsfunktion Animation
   var elem = document.getElementById("blackBar");
+  var elem2 = document.getElementById("whiteBar");
   clearInterval(id);
-  id = setInterval(frame, 2000);
+  id = setInterval(frame, 1000);
   function frame() {
       elem.style.height = "" + (Math.floor(Math.random() * 500)) + "px";  //Code to change Element Style
+      if(fieldRotated)
+      {
+        elem.style.background = "white";
+        elem2.style.background = "black";
+      }
+      else
+      {
+        elem.style.background = "black";
+        elem2.style.background = "white";
+      }
+      
   }
 }
 
