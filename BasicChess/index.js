@@ -24,10 +24,17 @@ var currentFigur = '0'; //aktuelle Figur Array
 var currentFigurDraw = '0'; //aktuelle Figur Zeichnung
 
 //Zeitanzeige
-Jetzt = new Date();  //neues Datumsobjekt mit aktuellem Zeitpunkt
-var Start = (Jetzt.getTime()) + 300000; //getTime(): absolute Zahl in Millisekunden + 5 Minuten
 var zeitanzeigeCom; //Computer
 var zeitanzeigePl; //Player
+
+Jetzt = new Date();  //neues Datumsobjekt mit aktuellem Zeitpunkt
+var Start = (Jetzt.getTime()) + 300000; //getTime(): absolute Zahl in Millisekunden + 5 Minuten
+var timeCom = 300;
+var timePl = 300;
+var timePlStart;
+var timeComStart;
+var currentTimeCom;
+var currentTimePl;
 
 var playerTurn = true; //Spieler ist zu Beginn am Zug
 var titleCom;
@@ -216,12 +223,24 @@ function mouseListener() {
             if(boolNewGame)
             {
                 boolNewGame = false;
-                Jetzt = new Date();  //neues Datumsobjekt mit aktuellem Zeitpunkt
-                Start = (Jetzt.getTime()) + 300000; //getTime(): absolute Zahl in Millisekunden + 5 Minuten
             }
+
             console.log("TargetX: " + targetNumberX + " TargetY: " + targetNumberY);
             playerSelected = false;
             playerTurn = !playerTurn;
+
+            if(playerTurn) //Spielerzeit läuft weiter
+            {
+                Jetzt = new Date();  //neues Datumsobjekt mit aktuellem Zeitpunkt
+                currentTimePl = (Jetzt.getTime()); //Millies
+                timePlStart = timePl;
+            }
+            else
+            {
+                Jetzt = new Date();  //neues Datumsobjekt mit aktuellem Zeitpunkt
+                currentTimeCom = (Jetzt.getTime()); //Millies
+                timeComStart = timeCom;
+            }
 
             //Aktualisierung der Figurenposition im Array
             figures[targetNumberY][targetNumberX] = currentFigur;
@@ -267,7 +286,6 @@ function startGame() {
     loadImages();
     console.log("Load Images erfolgreich");
     draw();
-    //setInterval(update, 1000 / 25); //update wird 25 Mal in der Sekunde aufgerufen
 }
 
 function loadImages() {
@@ -317,6 +335,7 @@ function loadImages() {
 
     bauer_weiss.img = new Image();
     bauer_weiss.img.src = bauer_weiss.src;
+
 }
 
 function draw() {  //Zeichnet die Bilder auf das Canvas
@@ -381,8 +400,7 @@ function draw() {  //Zeichnet die Bilder auf das Canvas
             titlePl.style.color = "#00ff84";
             titleCom.style.color = "white";
         }
-    }
-    
+    } 
     requestAnimationFrame(draw);
 }
 
@@ -512,49 +530,58 @@ function ZeitAnzeigenPl() //Zeitanzeige Spieler
    
 function ZeitBerechnenCom() // Erzeugt beim Aufruf ein neues Datumsobjekt mit aktueller Zeit
 { 
-    var Immernoch = new Date(); 
-    if(((Start - Immernoch.getTime())/1000) > 0)
+    if(boolNewGame)
     {
-        if(boolNewGame)
+        timeCom = 300;
+        return(300);
+    }
+    if(timeCom > 0)
+    {
+        if(!playerTurn) //Computer ist dran
         {
-            return(300);
+            var t = new Date();
+            timeCom = timeComStart - ((t.getTime()) - currentTimeCom)/1000;  //timePl = aktueller Zeitpunkt - Zeitpunkt wo Spieler dran ist
         }
-        if(((Start - Immernoch.getTime())/1000) < 60)
+        
+        if(timeCom < 60)
         {
             zeitanzeigeCom.style.color = "#B40404"; //Zeit wird rot
         }
-        return((Start - Immernoch.getTime())/1000); //Gibt Differenz zu Startzeitpunkt zurück
-
+        return(timeCom);
     }
     else
     {
         timeOver();
         return(0);
     }
-    
 }
 
 function ZeitBerechnenPl()
 { 
-    var Immernoch = new Date(); 
-    if(((Start - Immernoch.getTime())/1000) > 0)
+    if(boolNewGame)
     {
-        if(boolNewGame)
+        timePl = 300;
+        return(300);
+    }
+    if(timePl > 0)
+    {
+        if(playerTurn) //Spieler ist dran
         {
-            return(300);
+            var t = new Date();
+            timePl = timePlStart - ((t.getTime()) - currentTimePl)/1000;  //timePl = aktueller Zeitpunkt - Zeitpunkt wo Spieler dran ist
         }
-        if(((Start - Immernoch.getTime())/1000) < 60)
+        
+        if(timePl < 60)
         {
             zeitanzeigePl.style.color = "#B40404"; //Zeit wird rot
         }
-        return((Start - Immernoch.getTime())/1000); //Gibt Differenz zu Startzeitpunkt zurück
+        return(timePl);
     }
     else
     {
         timeOver();
         return(0);
     }
-    
 }
 
 function timeOver()
