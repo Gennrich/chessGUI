@@ -26,7 +26,6 @@ var currentFigurDraw = '0'; //aktuelle Figur Zeichnung
 //Zeitanzeige
 var zeitanzeigeCom; //Computer
 var zeitanzeigePl; //Player
-
 var timeCom = 300;
 var timePl = 300;
 var timePlStart;
@@ -34,19 +33,30 @@ var timeComStart;
 var currentTimeCom;
 var currentTimePl;
 
+//aktueller Spieler
 var playerTurn = true; //Spieler ist zu Beginn am Zug
 var titleCom;
 var titlePl;
 
-//Zug zurück
-var zugCounter = 0;
-
+//Feld drehen
 var boolNewGame = true; //neue Partie
 var fieldRotated = false; //Brett gedreht
-var figurBeaten = false;
 
+//Zugspeicherung
+var zugCounter = 0;
 var moves = []; //Arraylist mit allen Spielzügen
 var arrZugHistorie = [];
+var figurBeaten = false;
+
+//new
+var check = false; //Schach
+var checkmate = false; //Schachmatt
+var promotion = false; //Bauer wird in andere Figur umgewandelt
+var smallCastling = false; //kleine Rochade
+var bigCastling = false; //große Rochade
+var enPassant = false; //Schlagen en Passant
+var remis = false; //Remisangebot der Spieler
+
 
 let figur = {
     width: 100,
@@ -615,11 +625,9 @@ function myMove() {  //Bewertungsfunktion Animation
 }
 
 
-//Es fehlt die Kennzeichung des Schachgebots '+', Matt '#', die kleine Rochade '0-0'
-// die große Rochade '0-0-0'. das Schlagen en passant 'e.p.' und das Remisangebot '='
 function zugfolge() //Zeigt die vollständige Zughistorie an
 {
-    var z1, z2, z3, z4, z5, z6;
+    var z1, z2, z3, z4, z5, z6, z7, z8;
         switch(currentFigur) //Figur
         {
             case 'R': z1 = 'T'; break;
@@ -670,7 +678,48 @@ function zugfolge() //Zeigt die vollständige Zughistorie an
         }
         z6 = 8 - (moves[zugCounter -1].targetY); //y Koordinate Zielfeld
 
-        arrZugHistorie.push(z1 + z2 + z3 + z4 + z5 + z6);
+        //new
+        if(check) {
+            z7 = '+';
+        }
+        else
+        {
+            z7 = '';
+        }
+
+        if (checkmate) {
+            z7 = '#';
+        }
+        else
+        {
+            z7 = '';
+        }
+
+        if(enPassant) {
+            z8 = " e.P.";
+        }
+        else{
+            z8 = '';
+        }
+
+        if (smallCastling || bigCastling) {
+            if(smallCastling){
+                arrZugHistorie.push("0-0");
+            }
+            if(bigCastling){
+                arrZugHistorie.push("0-0-0");
+            }
+        }
+        else
+        {
+            arrZugHistorie.push(z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8);
+        }
+
+        if(remis) //Remisangebot
+        {
+            arrZugHistorie.push("=");
+        }
+
         zugfolgeAnzeigen();
     }
 
