@@ -38,7 +38,6 @@ var zugCounter = 0;
 
 var boolNewGame = true; //neue Partie
 var fieldRotated = false; //Brett gedreht
-var boolWhite = true; //Spielfarbe weiß
 var figurBeaten = false;
 
 var moves = []; //Arraylist mit allen Spielzügen
@@ -168,7 +167,7 @@ function mouseListener() {
         }
         currentFigur = (figures[fieldNumberY][fieldNumberX]);
 
-        if(currentFigur != '0' && (isWhite() == boolWhite))
+        if(currentFigur != '0' && (isWhite() == playerTurn))
         {
             console.log("fieldX: " + window.event.offsetX + " fieldY: " + window.event.offsetY);
             console.log("NumberX: " + fieldNumberX + " NumberY: " + fieldNumberY);
@@ -357,16 +356,33 @@ function draw() {  //Zeichnet die Bilder auf das Canvas
             
         }
     }
-    if(playerTurn)
+    if(!fieldRotated)
     {
-        titlePl.style.color = "#00ff84";
-        titleCom.style.color = "white";
+        if(playerTurn)
+        {
+            titlePl.style.color = "#00ff84";
+            titleCom.style.color = "white";
+        }
+        else
+        {
+            titlePl.style.color = "white";
+            titleCom.style.color = "#00ff84";
+        }
     }
     else
     {
-        titlePl.style.color = "white";
-        titleCom.style.color = "#00ff84";
+        if(playerTurn)
+        {
+            titlePl.style.color = "white";
+            titleCom.style.color = "#00ff84";
+        }
+        else
+        {
+            titlePl.style.color = "#00ff84";
+            titleCom.style.color = "white";
+        }
     }
+    
     requestAnimationFrame(draw);
 }
 
@@ -434,7 +450,6 @@ function newGame() //setzt alle Werte zurück und startet ein neues Spiel
 function turnField() //dreht das Spielfeld
 {
     fieldRotated = !fieldRotated;
-    boolWhite = !boolWhite;
     newGame();
 }
 
@@ -504,7 +519,7 @@ function ZeitBerechnenCom() // Erzeugt beim Aufruf ein neues Datumsobjekt mit ak
         {
             return(300);
         }
-        if(((Start - Immernoch.getTime())/1000) < 280)
+        if(((Start - Immernoch.getTime())/1000) < 60)
         {
             zeitanzeigeCom.style.color = "#B40404"; //Zeit wird rot
         }
@@ -528,7 +543,7 @@ function ZeitBerechnenPl()
         {
             return(300);
         }
-        if(((Start - Immernoch.getTime())/1000) < 290)
+        if(((Start - Immernoch.getTime())/1000) < 60)
         {
             zeitanzeigePl.style.color = "#B40404"; //Zeit wird rot
         }
