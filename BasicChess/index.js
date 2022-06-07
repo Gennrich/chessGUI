@@ -27,8 +27,6 @@ var currentFigurDraw = '0'; //aktuelle Figur Zeichnung
 var zeitanzeigeCom; //Computer
 var zeitanzeigePl; //Player
 
-Jetzt = new Date();  //neues Datumsobjekt mit aktuellem Zeitpunkt
-var Start = (Jetzt.getTime()) + 300000; //getTime(): absolute Zahl in Millisekunden + 5 Minuten
 var timeCom = 300;
 var timePl = 300;
 var timePlStart;
@@ -174,12 +172,29 @@ function mouseListener() {
         }
         currentFigur = (figures[fieldNumberY][fieldNumberX]);
 
-        if(currentFigur != '0' && (isWhite() == playerTurn))
+        if(currentFigur != '0')
         {
-            console.log("fieldX: " + window.event.offsetX + " fieldY: " + window.event.offsetY);
-            console.log("NumberX: " + fieldNumberX + " NumberY: " + fieldNumberY);
-            console.log("Figur: " + currentFigur);
-            playerSelected = true;
+            if(!fieldRotated)
+            {
+                if((isWhite() == playerTurn))
+                {
+                    console.log("fieldX: " + window.event.offsetX + " fieldY: " + window.event.offsetY);
+                    console.log("NumberX: " + fieldNumberX + " NumberY: " + fieldNumberY);
+                    console.log("Figur: " + currentFigur);
+                    playerSelected = true;
+                }
+            }
+            else
+            {
+                if((isWhite() != playerTurn))
+                {
+                    console.log("fieldX: " + window.event.offsetX + " fieldY: " + window.event.offsetY);
+                    console.log("NumberX: " + fieldNumberX + " NumberY: " + fieldNumberY);
+                    console.log("Figur: " + currentFigur);
+                    playerSelected = true;
+                }
+            }
+            
         }
     }
     else  //Zielfeld wird ausgewählt
@@ -375,8 +390,7 @@ function draw() {  //Zeichnet die Bilder auf das Canvas
             
         }
     }
-    if(!fieldRotated)
-    {
+
         if(playerTurn)
         {
             titlePl.style.color = "#00ff84";
@@ -387,20 +401,8 @@ function draw() {  //Zeichnet die Bilder auf das Canvas
             titlePl.style.color = "white";
             titleCom.style.color = "#00ff84";
         }
-    }
-    else
-    {
-        if(playerTurn)
-        {
-            titlePl.style.color = "white";
-            titleCom.style.color = "#00ff84";
-        }
-        else
-        {
-            titlePl.style.color = "#00ff84";
-            titleCom.style.color = "white";
-        }
-    } 
+   
+    
     requestAnimationFrame(draw);
 }
 
@@ -451,9 +453,7 @@ function newGame() //setzt alle Werte zurück und startet ein neues Spiel
         ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
         ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r']];
     }
-    Jetzt = new Date();
     boolNewGame = true;
-    Start = (Jetzt.getTime()) + 300000;
     playerTurn = true;
     for(let i = moves.length; i > 0; i--)
     {
@@ -469,6 +469,7 @@ function turnField() //dreht das Spielfeld
 {
     fieldRotated = !fieldRotated;
     newGame();
+    playerTurn = !playerTurn; //Muss nach new Game kommen!!!
 }
 
 function getImageSrc(c) { //gibt das passende Bild zu der Figur zurück
