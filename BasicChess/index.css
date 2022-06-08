@@ -51,12 +51,13 @@ h2 {
 
 
   #header {
-      background-color: white;
+    background-color: white;
   }
 
   #footer {
-        background-color: #455059;
-        height: 400px;
+    background-color: #455059;
+    height: 300px;
+    margin-top: -50px; /* Höhe des Footers */
   }
 
   #content {
@@ -68,11 +69,23 @@ h2 {
   body { 
     padding: 0;
     margin: 0;
+    height: 100%;
+    
   }
+
+  html {
+    height: 100%;
+  }
+
+  main {
+    padding-bottom:50px; /* Höhe des Footers */
+   } 
 
   table {
     background-color: #62717c;  
     width: 100%;
+    height: auto; 
+    min-height: 100%;
   }
 
   input {

@@ -32,6 +32,7 @@ var timePlStart;
 var timeComStart;
 var currentTimeCom;
 var currentTimePl;
+var Jetzt;
 
 //aktueller Spieler
 var playerTurn = true; //Spieler ist zu Beginn am Zug
