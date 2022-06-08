@@ -634,79 +634,68 @@ function myMove() {  //Bewertungsfunktion Animation
 
 function zugfolge() //Zeigt die vollständige Zughistorie an
 {
-    var z1, z2, z3, z4, z5, z6, z7, z8;
+    var currentMove = '';
         switch(currentFigur) //Figur
         {
-            case 'R': z1 = 'T'; break;
-            case 'N': z1 = 'S'; break;
-            case 'B': z1 = 'L'; break;
-            case 'Q': z1 = 'D'; break;
-            case 'K': z1 = 'K'; break;
-            case 'P': z1 = ''; break; //Bauern werden weggelassen
-            case 'r': z1 = 'T'; break;
-            case 'n': z1 = 'S'; break;
-            case 'b': z1 = 'L'; break;
-            case 'q': z1 = 'D'; break;
-            case 'k': z1 = 'K'; break;
-            case 'p': z1 = ''; break; //Bauern werden weggelassen
+            case 'R': currentMove = currentMove + 'T'; break;
+            case 'N': currentMove = currentMove + 'S'; break;
+            case 'B': currentMove = currentMove + 'L'; break;
+            case 'Q': currentMove = currentMove + 'D'; break;
+            case 'K': currentMove = currentMove + 'K'; break;
+            case 'P': break; //Bauern werden weggelassen
+            case 'r': currentMove = currentMove + 'T'; break;
+            case 'n': currentMove = currentMove + 'S'; break;
+            case 'b': currentMove = currentMove + 'L'; break;
+            case 'q': currentMove = currentMove + 'D'; break;
+            case 'k': currentMove = currentMove + 'K'; break;
+            case 'p': break; //Bauern werden weggelassen
         }
 
         switch(moves[zugCounter -1].startX) //x Koordinate Startfeld
         {
-            case 0: z2 = 'a'; break;
-            case 1: z2 = 'b'; break;
-            case 2: z2 = 'c'; break;
-            case 3: z2 = 'd'; break;
-            case 4: z2 = 'e'; break;
-            case 5: z2 = 'f'; break;
-            case 6: z2 = 'g'; break;
-            case 7: z2 = 'h'; break;
+            case 0: currentMove = currentMove + 'a'; break;
+            case 1: currentMove = currentMove + 'b'; break;
+            case 2: currentMove = currentMove + 'c'; break;
+            case 3: currentMove = currentMove + 'd'; break;
+            case 4: currentMove = currentMove + 'e'; break;
+            case 5: currentMove = currentMove + 'f'; break;
+            case 6: currentMove = currentMove + 'g'; break;
+            case 7: currentMove = currentMove + 'h'; break;
         }
-        z3 = 8 - (moves[zugCounter -1].startY); //y Koordinate Startfeld
+        currentMove = currentMove +  (8 - (moves[zugCounter -1].startY)); //y Koordinate Startfeld
 
         if(!figurBeaten)
         {
-            z4 = '-'; //keine Figur geschlagen
+            currentMove = currentMove + '-'; //keine Figur geschlagen
         }
         else
         {
-            z4 = 'x'; //Figur geschalgen
+            currentMove = currentMove + 'x'; //Figur geschalgen
         }
         switch(moves[zugCounter -1].targetX) //x Koordinate Zielfeld
         {
-            case 0: z5 = 'a'; break;
-            case 1: z5 = 'b'; break;
-            case 2: z5 = 'c'; break;
-            case 3: z5 = 'd'; break;
-            case 4: z5 = 'e'; break;
-            case 5: z5 = 'f'; break;
-            case 6: z5 = 'g'; break;
-            case 7: z5 = 'h'; break;
+            case 0: currentMove = currentMove + 'a'; break;
+            case 1: currentMove = currentMove + 'b'; break;
+            case 2: currentMove = currentMove + 'c'; break;
+            case 3: currentMove = currentMove + 'd'; break;
+            case 4: currentMove = currentMove + 'e'; break;
+            case 5: currentMove = currentMove + 'f'; break;
+            case 6: currentMove = currentMove + 'g'; break;
+            case 7: currentMove = currentMove + 'h'; break;
         }
-        z6 = 8 - (moves[zugCounter -1].targetY); //y Koordinate Zielfeld
+        currentMove = currentMove + (8 - (moves[zugCounter -1].targetY)); //y Koordinate Zielfeld
 
         //new
         if(check) {
-            z7 = '+';
-        }
-        else
-        {
-            z7 = '';
+            currentMove = currentMove + '+';
         }
 
         if (checkmate) {
-            z7 = '#';
-        }
-        else
-        {
-            z7 = '';
+            currentMove = currentMove + '#';
         }
 
         if(enPassant) {
-            z8 = " e.P.";
-        }
-        else{
-            z8 = '';
+            currentMove = currentMove + " e.P.";
         }
 
         if (smallCastling || bigCastling) {
@@ -719,7 +708,7 @@ function zugfolge() //Zeigt die vollständige Zughistorie an
         }
         else
         {
-            arrZugHistorie.push(z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8);
+            arrZugHistorie.push(currentMove);
         }
 
         if(remis) //Remisangebot
