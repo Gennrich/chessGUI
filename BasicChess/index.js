@@ -3,15 +3,15 @@ let ctx;
 let backgroundImage = new Image();
 let backgroundImageRotated = new Image(); 
 var playerSelected = false;
-var figures = [ //Figuren von oben links nach unten rechts (Groß: Schwarz, Klein: weiß)
-    ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
-    ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
-    ['0', '0', '0', '0', '0', '0', '0', '0'],
-    ['0', '0', '0', '0', '0', '0', '0', '0'],
-    ['0', '0', '0', '0', '0', '0', '0', '0'],
-    ['0', '0', '0', '0', '0', '0', '0', '0'],
+var figures = [ //Figuren von oben links nach unten rechts (Klein: Schwarz, Groß: weiß)
+    ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
     ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
-    ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r']];
+    ['0', '0', '0', '0', '0', '0', '0', '0'],
+    ['0', '0', '0', '0', '0', '0', '0', '0'],
+    ['0', '0', '0', '0', '0', '0', '0', '0'],
+    ['0', '0', '0', '0', '0', '0', '0', '0'],
+    ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+    ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']];
 var fieldX = 0; //Mouseclick Koordinaten
 var fieldY = 0; //Mouseclick Koordinaten
 var x; //Eckkoordinaten oben links des Feldes
@@ -45,11 +45,13 @@ var fieldRotated = false; //Brett gedreht
 
 //Zugspeicherung
 var zugCounter = 0;
+var halbZugCounter = 0; //um die 50 Züge Remisregel zu überwachen
+var blackZugCounter = 1;
 var moves = []; //Arraylist mit allen Spielzügen
 var arrZugHistorie = [];
 var figurBeaten = false;
 
-//new
+//Zughistorie
 var check = false; //Schach
 var checkmate = false; //Schachmatt
 var promotion = false; //Bauer wird in andere Figur umgewandelt
@@ -57,6 +59,13 @@ var smallCastling = false; //kleine Rochade
 var bigCastling = false; //große Rochade
 var enPassant = false; //Schlagen en Passant
 var remis = false; //Remisangebot der Spieler
+
+//FEN-String
+var whiteSmallCastling = true;
+var whiteBigCastling = true;
+var blackSmallCastling = true;
+var blackBigCastling = true;
+var enPassantPossible = false;
 
 
 let figur = {
@@ -238,9 +247,19 @@ function mouseListener() {
         }
         else
         {
+            if((figures[fieldNumberY][fieldNumberX] == 'P') || (figures[fieldNumberY][fieldNumberX] == 'p')) //Halbzugcounter für 50-Zug-Remisregel
+            {
+                halbZugCounter = 0;
+            }
+            else
+            {
+                halbZugCounter++;
+            }
+            
             if((figures[targetNumberY][targetNumberX]) != '0') // Figur geschlagen
             {
                 figurBeaten = true;
+                halbZugCounter = 0;
             }
             else
             {
@@ -260,6 +279,7 @@ function mouseListener() {
                 Jetzt = new Date();  //neues Datumsobjekt mit aktuellem Zeitpunkt
                 currentTimePl = (Jetzt.getTime()); //Millies
                 timePlStart = timePl;
+                blackZugCounter++;
             }
             else
             {
@@ -280,6 +300,7 @@ function mouseListener() {
             moves.push(move);
             zugCounter++;
             zugfolge();
+            fenString();
         }
         
     }
@@ -289,12 +310,12 @@ function isWhite() //überprüft ob die Figur weiß ist
 {
     switch(currentFigur)
     {
-        case 'r': return true;
-        case 'n': return true;
-        case 'b': return true;
-        case 'q': return true;
-        case 'k': return true;
-        case 'p': return true;
+        case 'R': return true;
+        case 'N': return true;
+        case 'B': return true;
+        case 'Q': return true;
+        case 'K': return true;
+        case 'P': return true;
         default: return false;
     }
 }
@@ -312,6 +333,7 @@ function startGame() {
     loadImages();
     console.log("Load Images erfolgreich");
     draw();
+    fenString();
 }
 
 function loadImages() {
@@ -443,26 +465,26 @@ function newGame() //setzt alle Werte zurück und startet ein neues Spiel
     if(fieldRotated)
     {
         figures = [
-        ['r', 'n', 'b', 'k', 'q', 'b', 'n', 'r'],
-        ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
-        ['0', '0', '0', '0', '0', '0', '0', '0'],
-        ['0', '0', '0', '0', '0', '0', '0', '0'],
-        ['0', '0', '0', '0', '0', '0', '0', '0'],
-        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R'],
         ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
-        ['R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R']];
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+        ['r', 'n', 'b', 'k', 'q', 'b', 'n', 'r']];
     }
     else
     {
-        figures = [
-        ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
-        ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
-        ['0', '0', '0', '0', '0', '0', '0', '0'],
-        ['0', '0', '0', '0', '0', '0', '0', '0'],
-        ['0', '0', '0', '0', '0', '0', '0', '0'],
-        ['0', '0', '0', '0', '0', '0', '0', '0'],
+    figures = [ 
+        ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
         ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
-        ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r']];
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0'],
+        ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+        ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']];
     }
     boolNewGame = true;
     playerTurn = true;
@@ -471,7 +493,6 @@ function newGame() //setzt alle Werte zurück und startet ein neues Spiel
         moves.pop();
         arrZugHistorie.pop();
     }
-    
     zugCounter = 0;
     document.getElementById("zug").innerHTML = "";
 }
@@ -493,18 +514,18 @@ function turnField() //dreht das Spielfeld
 function getImageSrc(c) { //gibt das passende Bild zu der Figur zurück
     var src;
     switch(c) {
-        case 'R': src = turm_black.img; break;
-        case 'N': src = pferd_black.img; break;
-        case 'B': src = laeufer_black.img; break;
-        case 'Q': src = dame_black.img; break;
-        case 'K': src = koenig_black.img; break;
-        case 'P': src = bauer_black.img; break;
-        case 'r': src = turm_weiss.img; break;
-        case 'n': src = pferd_weiss.img; break;
-        case 'b': src = laeufer_weiss.img; break;
-        case 'q': src = dame_weiss.img; break;
-        case 'k': src = koenig_weiss.img; break;
-        case 'p': src = bauer_weiss.img; break;
+        case 'r': src = turm_black.img; break;
+        case 'n': src = pferd_black.img; break;
+        case 'b': src = laeufer_black.img; break;
+        case 'q': src = dame_black.img; break;
+        case 'k': src = koenig_black.img; break;
+        case 'p': src = bauer_black.img; break;
+        case 'R': src = turm_weiss.img; break;
+        case 'N': src = pferd_weiss.img; break;
+        case 'B': src = laeufer_weiss.img; break;
+        case 'Q': src = dame_weiss.img; break;
+        case 'K': src = koenig_weiss.img; break;
+        case 'P': src = bauer_weiss.img; break;
         default: src = 'empty';
     }
     return src;
@@ -730,3 +751,106 @@ function zugfolgeAnzeigen()
         document.getElementById("zug").scrollTop = document.getElementById("zug").scrollHeight; //Scrollt Textfeld automatisch
     }   
 }
+
+function fenString()  //berechnet aus der aktuellen Spielfeldsituation einen FEN String
+{
+    var fen = '';
+    var counter = 0;
+    for (var i = 0; i < 8; i++)  //1.Figurenstellung
+    {
+        for (var j = 0; j < 8; j++) 
+        {
+            if((figures[i][j]) == '0')
+            {
+                counter++;
+            }
+            else
+            {
+                if(counter > 0)
+                {
+                    fen = fen + ((String)(counter));
+                }
+                fen = fen + (figures[i][j]);
+                counter = 0;
+            }
+        }
+        if(counter > 0)
+        {
+            fen = fen + ((String)(counter));
+        }
+        counter = 0;
+
+        if(i < 7)
+        {
+            fen = fen + '/';
+        }
+    }
+
+    if(playerTurn) //2. Zugrecht
+    {
+        if(!fieldRotated)
+        {
+            fen = fen + " w ";
+        }
+        else
+        {
+            fen = fen + " b ";
+        }
+        
+    }
+    else
+    {
+        if(!fieldRotated)
+        {
+            fen = fen + " b ";
+        }
+        else
+        {
+            fen = fen + " w ";
+        }
+    }
+
+    
+    if(!whiteSmallCastling && !whiteBigCastling && !blackSmallCastling && !blackBigCastling) // 3.Rochaderechte
+    {
+        fen = fen + "-";
+    }
+    else
+    {
+        if(whiteSmallCastling)
+        {
+            fen = fen + "K";
+        }
+        if(whiteBigCastling)
+        {
+            fen = fen + "Q";
+        }
+        if(blackSmallCastling)
+        {
+            fen = fen + "k";
+        }
+        if(blackBigCastling)
+        {
+            fen = fen + "q";
+        }
+    }
+
+    if(!enPassantPossible) // 4.Möglicher En-passant-Schlag
+    {
+        fen = fen + " -";
+    }
+    else
+    {
+        var field;
+        //Muss von Backend kommen
+        fen = fen + ((String)(field));
+    }
+
+    fen = fen + " " + (halbZugCounter); // 5.Gespielte Halbzüge seit dem letzten Bauernzug oder dem Schlagen einer Figur
+
+    fen = fen + " " + (blackZugCounter); // 6.Nummer des nächsten Zuges
+
+    console.log(fen);
+}
+
+
