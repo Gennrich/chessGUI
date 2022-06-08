@@ -480,7 +480,14 @@ function turnField() //dreht das Spielfeld
 {
     fieldRotated = !fieldRotated;
     newGame();
-    playerTurn = !playerTurn; //Muss nach new Game kommen!!!
+    if(fieldRotated)
+    {
+        playerTurn = false;
+    }
+    else
+    {
+        playerTurn = true;
+    }
 }
 
 function getImageSrc(c) { //gibt das passende Bild zu der Figur zurück
