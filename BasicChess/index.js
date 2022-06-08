@@ -602,7 +602,6 @@ function timeOver()
 
 
 var id = null;
-
 function myMove() {  //Bewertungsfunktion Animation
   var elem = document.getElementById("blackBar");
   var elem2 = document.getElementById("whiteBar");
