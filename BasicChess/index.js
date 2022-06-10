@@ -67,6 +67,11 @@ var blackSmallCastling = true;
 var blackBigCastling = true;
 var enPassantPossible = false;
 
+//Wins
+var playerPoints = 0;
+var computerPoints = 0;
+var playerWon = false;
+
 
 let figur = {
     width: 100,
@@ -591,6 +596,7 @@ function ZeitBerechnenCom() // Erzeugt beim Aufruf ein neues Datumsobjekt mit ak
     }
     else
     {
+        playerWon = true;
         timeOver();
         return(0);
     }
@@ -619,6 +625,7 @@ function ZeitBerechnenPl()
     }
     else
     {
+        playerWon = false;
         timeOver();
         return(0);
     }
@@ -626,7 +633,16 @@ function ZeitBerechnenPl()
 
 function timeOver()
 {
-    //console.log("Zeit vorbei");
+    if(playerWon)
+    {
+        playerPoints++;
+        wins.innerHTML = computerPoints + " : " + playerPoints;
+    }
+    else
+    {
+        computerPoints++;
+        wins.innerHTML = computerPoints + " : " + playerPoints;
+    }
 }
 
 
