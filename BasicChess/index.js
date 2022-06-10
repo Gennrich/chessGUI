@@ -71,6 +71,7 @@ var enPassantPossible = false;
 var playerPoints = 0;
 var computerPoints = 0;
 var playerWon = false;
+var boolTimeOver = true;
 
 
 let figur = {
@@ -500,6 +501,7 @@ function newGame() //setzt alle Werte zurück und startet ein neues Spiel
     }
     zugCounter = 0;
     document.getElementById("zug").innerHTML = "";
+    boolTimeOver = true;
 }
 
 function turnField() //dreht das Spielfeld
@@ -633,16 +635,21 @@ function ZeitBerechnenPl()
 
 function timeOver()
 {
-    if(playerWon)
+    if(boolTimeOver)
     {
-        playerPoints++;
-        wins.innerHTML = computerPoints + " : " + playerPoints;
+        if(playerWon)
+        {
+            playerPoints++;
+            wins.innerHTML = computerPoints + " : " + playerPoints;
+        }
+        else
+        {
+            computerPoints++;
+            wins.innerHTML = computerPoints + " : " + playerPoints;
+        }
+        boolTimeOver = false;
     }
-    else
-    {
-        computerPoints++;
-        wins.innerHTML = computerPoints + " : " + playerPoints;
-    }
+    
 }
 
 
